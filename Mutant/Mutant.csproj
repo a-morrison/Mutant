@@ -57,6 +57,12 @@
     <Compile Include="Core\Commands\ReportCommand.cs" />
     <Compile Include="Core\Commands\TestCommand.cs" />
     <Compile Include="Core\Program.cs" />
+    <Compile Include="Deploy\DeployAllCommand.cs" />
+    <Compile Include="Deploy\DeployAllNoTestsCommand.cs" />
+    <Compile Include="Deploy\DeploySomeCommand.cs" />
+    <Compile Include="Deploy\DeploySomeNoTestsCommand.cs" />
+    <Compile Include="Deploy\DeploySomeSelectedTestsCommand.cs" />
+    <Compile Include="Deploy\ICommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Dependency\" />
-    <Folder Include="Deploy\" />
     <Folder Include="Report\" />
     <Folder Include="Test\" />
   </ItemGroup>
