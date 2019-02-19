@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Commands\DeployCommand.cs" />
+    <Compile Include="Core\Commands\InitCommand.cs" />
     <Compile Include="Core\Commands\ReportCommand.cs" />
     <Compile Include="Core\Commands\TestCommand.cs" />
     <Compile Include="Core\Program.cs" />
