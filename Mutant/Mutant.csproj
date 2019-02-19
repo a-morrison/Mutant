@@ -32,7 +32,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'All|AnyCPU'">
+    <OutputPath>bin\All\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ManyConsole, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ManyConsole.1.0.0.4\lib\ManyConsole.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Options, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Options.5.3.0\lib\net4-client\Mono.Options.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,19 +52,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mutant.Core\Program.cs" />
+    <Compile Include="Core\Commands\DeployCommand.cs" />
+    <Compile Include="Core\Commands\ReportCommand.cs" />
+    <Compile Include="Core\Commands\TestCommand.cs" />
+    <Compile Include="Core\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mutant.Core\Command\" />
-    <Folder Include="Mutant.Core\Dependency\" />
-    <Folder Include="Mutant.Deploy\" />
-    <Folder Include="Mutant.Report\" />
-    <Folder Include="Mutant.Test\" />
+    <Folder Include="Core\Dependency\" />
+    <Folder Include="Deploy\" />
+    <Folder Include="Report\" />
+    <Folder Include="Test\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

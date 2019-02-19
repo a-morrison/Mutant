@@ -7,10 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutant", "Mutant\Mutant.csp
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8297E381-641B-4D6F-B585-7CD02586BB0C}.All|Any CPU.ActiveCfg = All|Any CPU
+		{8297E381-641B-4D6F-B585-7CD02586BB0C}.All|Any CPU.Build.0 = All|Any CPU
 		{8297E381-641B-4D6F-B585-7CD02586BB0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8297E381-641B-4D6F-B585-7CD02586BB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8297E381-641B-4D6F-B585-7CD02586BB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
