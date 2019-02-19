@@ -1,4 +1,6 @@
-﻿namespace Mutant.Deploy
+﻿using System;
+
+namespace Mutant.Deploy
 {
     class DeployAllNoTestsCommand : ICommand
     {
