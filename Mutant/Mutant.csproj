@@ -61,6 +61,7 @@
     <Compile Include="Core\Commands\TestCommand.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Deploy\Deployment.cs" />
+    <Compile Include="Deploy\Engine\MainEngine.cs" />
     <Compile Include="Deploy\Factory\Artificers\Artificer.cs" />
     <Compile Include="Deploy\Factory\Artificers\ArtificerFactory.cs" />
     <Compile Include="Deploy\Factory\Artificers\ComprehensiveArtificer.cs" />
@@ -84,7 +85,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Dependency\" />
-    <Folder Include="Deploy\Engine\" />
     <Folder Include="Report\" />
     <Folder Include="Test\" />
   </ItemGroup>

@@ -99,7 +99,8 @@ namespace Mutant.Deploy.Factory.Artificers
 
                     SplitString copyPath = Split(fullPath, splitLocation);
 
-                    string targetDirectoryForFile = WorkingDirectory + directoryByFileType[path.Right] + copyPath.Right;
+                    string targetDirectoryForFile = WorkingDirectory + 
+                        directoryByFileType[path.Right] + copyPath.Right;
                     string metaFileSource = fullPath + "-meta.xml";
                     string metaFileName = copyPath.Right + "-meta.xml";
 
