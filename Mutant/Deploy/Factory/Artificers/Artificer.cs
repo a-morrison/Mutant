@@ -12,6 +12,12 @@ namespace Mutant.Deploy.Factory.Artificers
     {
         public abstract void CreateArtifact();
 
+        private struct SplitString
+        {
+            public string Left;
+            public string Right;
+        }
+
         protected void DestroyExistingArtifacts()
         {
             if (Directory.Exists(@"deploy\artifacts"))
@@ -22,6 +28,7 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
                 catch (IOException)
                 {
+                    // try again to skip "Folder is not empty" error.
                     Thread.Sleep(0);
                     Directory.Delete(@"deploy\artifacts", true);
                 }
@@ -84,24 +91,19 @@ namespace Mutant.Deploy.Factory.Artificers
             {
                 string fullPath = WorkingDirectory + Result.ToString();
                 fullPath = fullPath.Replace('/', '\\');
-                Console.WriteLine(fullPath);
-                string[] split = fullPath.Split('.');
-                string path = string.Join(".", split.Take(split.Length - 1));
-                string extension = split.Last();
+                SplitString path = Split(fullPath, ".");
 
-                if (directoryByFileType.ContainsKey(extension))
+                if (directoryByFileType.ContainsKey(path.Right))
                 {
-                    string splitLocation = placeToSplit[extension];
+                    string splitLocation = placeToSplit[path.Right];
 
-                    string[] otherSplit = fullPath.Split(new string[] { splitLocation }, StringSplitOptions.None);
-                    string unneededPath = string.Join(".", otherSplit.Take(otherSplit.Length - 1));
-                    string newFileName = otherSplit.Last();
+                    SplitString copyPath = Split(fullPath, splitLocation);
 
-                    string targetDirectoryForFile = WorkingDirectory + directoryByFileType[extension] + newFileName;
+                    string targetDirectoryForFile = WorkingDirectory + directoryByFileType[path.Right] + copyPath.Right;
                     string metaFileSource = fullPath + "-meta.xml";
-                    string metaFileName = newFileName + "-meta.xml";
+                    string metaFileName = copyPath.Right + "-meta.xml";
 
-                    string targetDirectoryForMetaFile = directoryByFileType[extension] + metaFileName;
+                    string targetDirectoryForMetaFile = directoryByFileType[path.Right] + metaFileName;
                     File.Copy(fullPath, targetDirectoryForFile);
                     File.Copy(metaFileSource, targetDirectoryForMetaFile);
                 }
@@ -112,6 +114,15 @@ namespace Mutant.Deploy.Factory.Artificers
             }
 
             File.Copy(@"src\package.xml", @"deploy\artifacts\src\package.xml");
+        }
+
+        private SplitString Split(string StringToSplit, string SplitLocation)
+        {
+            SplitString split = new SplitString();
+            string[] splited = StringToSplit.Split(new string[] { SplitLocation }, StringSplitOptions.None);
+            split.Left = String.Join(".", splited.Take(splited.Length - 1));
+            split.Right = splited.Last();
+            return split;
         }
     }
 }
