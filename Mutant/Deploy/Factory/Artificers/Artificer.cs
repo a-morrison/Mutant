@@ -10,6 +10,8 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     abstract class Artificer
     {
+        public abstract void CreateArtifact();
+
         protected void DestroyExistingArtifacts()
         {
             if (Directory.Exists(@"deploy\artifacts"))
@@ -111,7 +113,5 @@ namespace Mutant.Deploy.Factory.Artificers
 
             File.Copy(@"src\package.xml", @"deploy\artifacts\src\package.xml");
         }
-
-        public abstract void CreateArtifact();
     }
 }
