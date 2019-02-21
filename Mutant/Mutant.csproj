@@ -60,13 +60,21 @@
     <Compile Include="Core\Commands\ReportCommand.cs" />
     <Compile Include="Core\Commands\TestCommand.cs" />
     <Compile Include="Core\Program.cs" />
-    <Compile Include="Deploy\Artificer\IArtificer.cs" />
-    <Compile Include="Deploy\DeployAllCommand.cs" />
-    <Compile Include="Deploy\DeployAllNoTestsCommand.cs" />
-    <Compile Include="Deploy\DeploySomeCommand.cs" />
-    <Compile Include="Deploy\DeploySomeNoTestsCommand.cs" />
-    <Compile Include="Deploy\DeploySomeSelectedTestsCommand.cs" />
-    <Compile Include="Deploy\ICommand.cs" />
+    <Compile Include="Deploy\Deployment.cs" />
+    <Compile Include="Deploy\Factory\Artificers\Artificer.cs" />
+    <Compile Include="Deploy\Factory\Artificers\ArtificerFactory.cs" />
+    <Compile Include="Deploy\Factory\Artificers\ComprehensiveArtificer.cs" />
+    <Compile Include="Deploy\Factory\Artificers\ComprehensiveFactory.cs" />
+    <Compile Include="Deploy\Factory\Artificers\SelectiveArtificer.cs" />
+    <Compile Include="Deploy\Factory\Artificers\SelectiveFactory.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\AllTestsFactory.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\AllTests.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\NoTests.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\NoTestsFactory.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\SomeTests.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\SomeTestsFactory.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\TestLevel.cs" />
+    <Compile Include="Deploy\Factory\TestLevels\TestLevelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +84,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Dependency\" />
+    <Folder Include="Deploy\Engine\" />
     <Folder Include="Report\" />
     <Folder Include="Test\" />
   </ItemGroup>

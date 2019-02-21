@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ManyConsole;
+using Mutant.Deploy.Factory.TestLevels;
+using Mutant.Deploy.Factory.Artificers;
 using Mutant.Deploy;
 
 namespace Mutant.Core.Commands
 {
     class DeployCommand : ConsoleCommand
     {
-
         private bool IsNonSelective = false;
         private bool RunAllTests = false;
         private bool RunSelectiveTests = false;
@@ -30,30 +31,26 @@ namespace Mutant.Core.Commands
         public override int Run(string[] remainingArguments)
         {
             Console.Out.WriteLine("Deploy called!");
+            TestLevelFactory TestLevel = new NoTestsFactory();
+            ArtificerFactory Artificer = new SelectiveFactory();
 
-            ICommand command = new DeploySomeCommand();
-
-            if (IsNonSelective && RunAllTests)
+            if (IsNonSelective)
             {
-                command = new DeployAllCommand();
+                Artificer = new ComprehensiveFactory();
             }
 
-            if (IsNonSelective && !RunAllTests)
+            if (RunAllTests)
             {
-                command = new DeployAllNoTestsCommand();
+                TestLevel = new AllTestsFactory();
             }
 
-            if (!IsNonSelective && !RunAllTests)
+            if (RunSelectiveTests)
             {
-                command = new DeploySomeNoTestsCommand();
+                TestLevel = new SomeTestsFactory();
             }
 
-            if (!IsNonSelective && RunSelectiveTests)
-            {
-                command = new DeploySomeSelectedTestsCommand();
-            }
-
-            command.Deploy();
+            Deployment deployment = new Deployment(TestLevel, Artificer);
+            deployment.Deploy();
 
             return 0;
         }

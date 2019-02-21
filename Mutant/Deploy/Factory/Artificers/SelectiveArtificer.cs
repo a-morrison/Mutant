@@ -1,24 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
-using System;
 using System.Threading;
 
-namespace Mutant.Deploy
+namespace Mutant.Deploy.Factory.Artificers
 {
-    class DeploySomeCommand : ICommand
+    class SelectiveArtificer : Artificer
     {
-        private readonly List<string> directoriesToCreate = new List<string>
-        {
-            { @"deploy\artifacts" },
-            { @"deploy\artifacts\src\classes" },
-            { @"deploy\artifacts\src\triggers" },
-            { @"deploy\artifacts\src\pages" },
-            { @"deploy\artifacts\src\components" }
-        };
-
         private Dictionary<string, string> directoryByFileType = new Dictionary<string, string>
         {
             { "cls", @"deploy\artifacts\src\classes\" },
@@ -35,39 +26,15 @@ namespace Mutant.Deploy
             { "component", @"components\" }
         };
 
-        public void Deploy()
+        public override void CreateArtifact()
         {
             string workingDir = @"C:\Users\Alex Morrison\Documents\MutantTesting\DOH\DC%20DOH\";
             Directory.SetCurrentDirectory(workingDir);
-            if (Directory.Exists(@"deploy\artifacts"))
-            {
-                try
-                {
-                    Directory.Delete(@"deploy\artifacts", true);
-                }
-                catch (IOException )
-                {
-                    Thread.Sleep(0);
-                    Directory.Delete(@"deploy\artifacts", true);
-                }
-            }
+            DestroyExistingArtifacts();
 
-            foreach (string dirctoryToCreate in directoriesToCreate)
-            {
-                Directory.CreateDirectory(dirctoryToCreate);
-            }
-
-            string directory = Directory.GetCurrentDirectory();
-            Collection<PSObject> results = new Collection<PSObject>();
-
-            using (PowerShell powershell = PowerShell.Create())
-            {
-                powershell.AddScript(String.Format(@"cd {0}", directory));
-
-                powershell.AddScript(@"git diff --name-only");
-
-                results = powershell.Invoke();
-            }
+            CreateDirectories();
+            
+            Collection<PSObject> results = RunPowershellCommand("git diff --name-only");
 
             foreach (PSObject result in results)
             {
@@ -101,6 +68,56 @@ namespace Mutant.Deploy
             }
 
             File.Copy(@"src\package.xml", @"deploy\artifacts\src\package.xml");
+        }
+
+        private void DestroyExistingArtifacts()
+        {
+            if (Directory.Exists(@"deploy\artifacts"))
+            {
+                try
+                {
+                    Directory.Delete(@"deploy\artifacts", true);
+                }
+                catch (IOException)
+                {
+                    Thread.Sleep(0);
+                    Directory.Delete(@"deploy\artifacts", true);
+                }
+            }
+        }
+
+        private void CreateDirectories()
+        {
+            List<string> directoriesToCreate = new List<string>
+            {
+                { @"deploy\artifacts" },
+                { @"deploy\artifacts\src\classes" },
+                { @"deploy\artifacts\src\triggers" },
+                { @"deploy\artifacts\src\pages" },
+                { @"deploy\artifacts\src\components" }
+            };
+
+            foreach (string dirctoryToCreate in directoriesToCreate)
+            {
+                Directory.CreateDirectory(dirctoryToCreate);
+            }
+        }
+
+        private Collection<PSObject> RunPowershellCommand(string Command)
+        {
+            string directory = Directory.GetCurrentDirectory();
+            Collection<PSObject> results = new Collection<PSObject>();
+
+            using (PowerShell powershell = PowerShell.Create())
+            {
+                powershell.AddScript(String.Format(@"cd {0}", directory));
+
+                powershell.AddScript(@Command);
+
+                results = powershell.Invoke();
+            }
+
+            return results;
         }
     }
 }
