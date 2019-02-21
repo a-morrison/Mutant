@@ -1,5 +1,6 @@
 ﻿using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Deploy.Factory.Artificers;
+using Mutant.Deploy.Engine;
 
 namespace Mutant.Deploy
 {
@@ -17,6 +18,9 @@ namespace Mutant.Deploy
         public void Deploy()
         {
             Artificer.CreateArtifact();
+
+            MainEngine runner = new MainEngine(TestLevel);
+            runner.Run();
         }
     }
 }
