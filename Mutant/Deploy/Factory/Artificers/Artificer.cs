@@ -61,7 +61,7 @@ namespace Mutant.Deploy.Factory.Artificers
             {
                 powershell.AddScript(String.Format(@"cd {0}", directory));
 
-                powershell.AddScript(@Command);
+                powershell.AddScript(Command);
 
                 results = powershell.Invoke();
             }
