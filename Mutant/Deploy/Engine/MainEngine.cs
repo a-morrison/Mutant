@@ -19,13 +19,15 @@ namespace Mutant.Deploy.Engine
 
         public void Run()
         {
+            Console.WriteLine("Run called!");
             string AntHome = Environment.GetEnvironmentVariable("ant_home");
             using (Process ant = new Process())
             {
                 ant.StartInfo.UseShellExecute = false;
                 ant.StartInfo.FileName = AntHome + @"\bin\ant.bat";
-                ant.StartInfo.CreateNoWindow = true;
+
                 ant.Start();
+                ant.WaitForExit();
             }
         }
     }

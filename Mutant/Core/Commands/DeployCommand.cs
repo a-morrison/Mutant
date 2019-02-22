@@ -8,7 +8,7 @@ namespace Mutant.Core.Commands
 {
     class DeployCommand : ConsoleCommand
     {
-        private bool IsNonSelective = false;
+        private bool IsComprehensive = false;
         private bool RunAllTests = false;
         private bool RunSelectiveTests = false;
 
@@ -18,8 +18,8 @@ namespace Mutant.Core.Commands
 
             this.HasLongDescription("Extra info");
 
-            this.HasOption("a|all:", "Optional. If not used, tool defaults to selective deployment. Non-Selective deployment. Pushes all objects regardless of status.", 
-                v => IsNonSelective = v == null ? true : Convert.ToBoolean(v));
+            this.HasOption("a|all:", "Optional. If not used, tool defaults to selective deployment. Comprehensive deployment. Pushes all objects regardless of status.", 
+                v => IsComprehensive = v == null ? true : Convert.ToBoolean(v));
             this.HasOption("t|run-tests:", "Optional. Required if pushing to production.", v => RunAllTests = v == null ? true : Convert.ToBoolean(v));
             this.HasOption("s|selective-tests:", "Optional. If chosen runs tests based on @test annotation in class.", v => RunSelectiveTests = v == null ? true : Convert.ToBoolean(v));
         }
@@ -30,7 +30,7 @@ namespace Mutant.Core.Commands
             TestLevelFactory TestLevel = new NoTestsFactory();
             ArtificerFactory Artificer = new SelectiveFactory();
 
-            if (IsNonSelective)
+            if (IsComprehensive)
             {
                 Artificer = new ComprehensiveFactory();
             }
