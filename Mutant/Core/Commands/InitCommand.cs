@@ -42,7 +42,7 @@ namespace Mutant.Core.Commands
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, MutantInfo);
             }
-
+            
             return 0;
         }
     }

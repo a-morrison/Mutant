@@ -62,6 +62,7 @@
     <Compile Include="Core\Commands\InitCommand.cs" />
     <Compile Include="Core\Commands\ReportCommand.cs" />
     <Compile Include="Core\Commands\TestCommand.cs" />
+    <Compile Include="Core\Credentials.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Deploy\Deployment.cs" />
     <Compile Include="Deploy\Engine\MainEngine.cs" />
