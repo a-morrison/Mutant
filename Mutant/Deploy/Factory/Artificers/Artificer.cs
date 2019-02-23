@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Mutant.Deploy.Factory.Artificers
 {
-    abstract class Artificer
+    public abstract class Artificer
     {
         public abstract void CreateArtifact();
 

@@ -4,7 +4,7 @@ using Mutant.Deploy.Engine;
 
 namespace Mutant.Deploy
 {
-    class Deployment
+    public class Deployment
     {
         private TestLevel TestLevel;
         private Artificer Artificer;

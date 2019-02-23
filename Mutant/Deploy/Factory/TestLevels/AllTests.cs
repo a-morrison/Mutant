@@ -1,6 +1,6 @@
 ﻿namespace Mutant.Deploy.Factory.TestLevels
 {
-    class AllTests : TestLevel
+    public class AllTests : TestLevel
     {
     }
 }

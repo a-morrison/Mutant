@@ -1,6 +1,6 @@
 ﻿namespace Mutant.Deploy.Factory.Artificers
 {
-    class ComprehensiveFactory : ArtificerFactory
+    public class ComprehensiveFactory : ArtificerFactory
     {
         public override Artificer CreateArtificer()
         {

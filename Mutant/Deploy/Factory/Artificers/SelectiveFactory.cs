@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Mutant.Deploy.Factory.Artificers
+﻿namespace Mutant.Deploy.Factory.Artificers
 {
-    class SelectiveFactory : ArtificerFactory
+    public class SelectiveFactory : ArtificerFactory
     {
         public override Artificer CreateArtificer()
         {

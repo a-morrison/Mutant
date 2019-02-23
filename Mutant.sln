@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mutant", "Mutant\Mutant.csproj", "{8297E381-641B-4D6F-B585-7CD02586BB0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MutantTest", "MutantTest\MutantTest.csproj", "{58800E56-0594-418E-B6FF-0ADF4E8FB45B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -18,6 +20,12 @@ Global
 		{8297E381-641B-4D6F-B585-7CD02586BB0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8297E381-641B-4D6F-B585-7CD02586BB0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8297E381-641B-4D6F-B585-7CD02586BB0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58800E56-0594-418E-B6FF-0ADF4E8FB45B}.All|Any CPU.ActiveCfg = Debug|Any CPU
+		{58800E56-0594-418E-B6FF-0ADF4E8FB45B}.All|Any CPU.Build.0 = Debug|Any CPU
+		{58800E56-0594-418E-B6FF-0ADF4E8FB45B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58800E56-0594-418E-B6FF-0ADF4E8FB45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58800E56-0594-418E-B6FF-0ADF4E8FB45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58800E56-0594-418E-B6FF-0ADF4E8FB45B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

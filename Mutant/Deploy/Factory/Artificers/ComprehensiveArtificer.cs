@@ -2,7 +2,7 @@
 
 namespace Mutant.Deploy.Factory.Artificers
 {
-    class ComprehensiveArtificer : Artificer
+    public class ComprehensiveArtificer : Artificer
     {
         public override void CreateArtifact()
         {

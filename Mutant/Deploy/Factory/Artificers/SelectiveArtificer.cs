@@ -5,7 +5,7 @@ using System.Management.Automation;
 
 namespace Mutant.Deploy.Factory.Artificers
 {
-    class SelectiveArtificer : Artificer
+    public class SelectiveArtificer : Artificer
     {
         public override void CreateArtifact()
         {

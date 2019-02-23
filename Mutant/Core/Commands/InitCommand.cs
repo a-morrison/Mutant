@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ManyConsole;
 using Newtonsoft.Json;
 
 namespace Mutant.Core.Commands
 {
-    class InitCommand : ConsoleCommand
+    public class InitCommand : ConsoleCommand
     {
         private struct Info
         {
@@ -44,7 +39,20 @@ namespace Mutant.Core.Commands
                 serializer.Serialize(file, MutantInfo);
             }
 
-            Console.WriteLine(this.GetType().Assembly.Location);
+            Credentials creds = Credentials.getInstance();
+            string BuildFile = AppContext.BaseDirectory + "build.xml ";
+            string Command = "-buildfile " +
+                BuildFile +
+                "\"-Dsf.serverurl=" +
+                creds.URL +
+                "\" " +
+                "\"-Dsf.username=" +
+                creds.Username +
+                "\" " +
+                "\"-Dsf.password=" +
+                creds.Password +
+                "\" ";
+            Console.WriteLine(Command);
 
             return 0;
         }

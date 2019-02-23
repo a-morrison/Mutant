@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Core;
 
 namespace Mutant.Deploy.Engine
 {
-    class MainEngine
+    public class MainEngine
     {
         private TestLevel TestLevel;
 
@@ -34,8 +32,9 @@ namespace Mutant.Deploy.Engine
         private string BuildArguments()
         {
             Credentials creds = Credentials.getInstance();
+            string BuildFile = AppContext.BaseDirectory + "build.xml ";
             string Command = "-buildfile " +
-                "FILE " +
+                BuildFile +
                 "\"Dsf.serverurl=" +
                 creds.URL +
                 "\" " +

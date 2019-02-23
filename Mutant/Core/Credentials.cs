@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Mutant.Core
 {
-    class Credentials
+    public class Credentials
     {
         public string Username { get; private set; }
         public string Password { get; private set; }

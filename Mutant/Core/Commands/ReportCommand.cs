@@ -7,7 +7,7 @@ using ManyConsole;
 
 namespace Mutant.Core.Commands
 {
-    class ReportCommand : ConsoleCommand
+    public class ReportCommand : ConsoleCommand
     {
         public ReportCommand()
         {

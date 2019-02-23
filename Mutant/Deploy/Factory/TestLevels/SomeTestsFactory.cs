@@ -1,6 +1,6 @@
 ﻿namespace Mutant.Deploy.Factory.TestLevels
 {
-    class SomeTestsFactory : TestLevelFactory
+    public class SomeTestsFactory : TestLevelFactory
     {
         public override TestLevel CreateTestLevel()
         {

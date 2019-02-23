@@ -6,7 +6,7 @@ using Mutant.Deploy;
 
 namespace Mutant.Core.Commands
 {
-    class DeployCommand : ConsoleCommand
+    public class DeployCommand : ConsoleCommand
     {
         private bool IsComprehensive = false;
         private bool RunAllTests = false;
