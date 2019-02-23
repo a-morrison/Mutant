@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mutant.Core;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Management.Automation;
@@ -9,15 +10,21 @@ namespace Mutant.Deploy.Factory.Artificers
     {
         public override void CreateArtifact()
         {
-            string workingDir = @"C:\Users\Alex Morrison\Documents\MutantTesting\DOH\DC%20DOH\";
-            Directory.SetCurrentDirectory(workingDir);
-            DestroyExistingArtifacts();
+            try
+            {
+                Credentials Creds = Credentials.GetInstance();
 
-            CreateDirectories();
-            
-            Collection<PSObject> results = RunPowershellCommand("git diff --name-only");
+                DestroyExistingArtifacts();
 
-            ProcessResults(results, workingDir);
+                CreateDirectories();
+
+                Collection<PSObject> results = RunPowershellCommand("git diff --name-only");
+
+                ProcessResults(results, Creds.WorkingDirectory);
+            } catch (Exception ex) 
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
