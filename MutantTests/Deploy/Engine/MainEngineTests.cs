@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mutant.Deploy.Engine;
+using Mutant.Deploy.Factory.TestLevels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,13 @@ namespace Mutant.Deploy.Engine.Tests
     public class MainEngineTests
     {
         [TestMethod()]
-        public void MainEngineTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
         public void RunTest()
         {
-            Assert.Fail();
+            TestLevelFactory factory = new NoTestsFactory();
+            TestLevel level = factory.CreateTestLevel();
+
+            MainEngine engine = new MainEngine(level);
+            engine.Run();
         }
     }
 }

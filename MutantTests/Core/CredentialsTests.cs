@@ -1,11 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mutant.Core;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace Mutant.Core.Tests
@@ -16,16 +11,16 @@ namespace Mutant.Core.Tests
         [TestMethod()]
         public void TestNoFile()
         {
+            string WorkingDirectory = Directory.GetCurrentDirectory();
             Credentials Creds = null;
             try
             {
                 Creds = Credentials.GetInstance();
             } catch (Exception ex)
             {
-
+                Assert.IsFalse(File.Exists(WorkingDirectory + @"\.credentials"));
+                Assert.IsNull(Creds);
             }
-
-            Assert.IsNull(Creds);
         }
 
         [TestMethod()]

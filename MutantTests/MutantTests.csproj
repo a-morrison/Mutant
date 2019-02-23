@@ -59,11 +59,10 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Core\Commands\DeployCommandTests.cs" />
-    <Compile Include="Core\Commands\InitCommandTests.cs" />
     <Compile Include="Core\CredentialsTests.cs" />
     <Compile Include="Deploy\DeploymentTests.cs" />
     <Compile Include="Deploy\Engine\MainEngineTests.cs" />
+    <Compile Include="Deploy\Factory\Artificers\ArtificerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Commands\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

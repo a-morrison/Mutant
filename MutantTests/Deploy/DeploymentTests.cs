@@ -1,10 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mutant.Deploy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Mutant.Deploy.Factory.Artificers;
+using Mutant.Deploy.Factory.TestLevels;
 
 namespace Mutant.Deploy.Tests
 {
@@ -12,15 +8,13 @@ namespace Mutant.Deploy.Tests
     public class DeploymentTests
     {
         [TestMethod()]
-        public void DeploymentTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
         public void DeployTest()
         {
-            Assert.Fail();
+            ArtificerFactory artificerFactory = new SelectiveFactory();
+            TestLevelFactory testFactory = new NoTestsFactory();
+
+            Deployment deployment = new Deployment(testFactory, artificerFactory);
+            deployment.Deploy();
         }
     }
 }
