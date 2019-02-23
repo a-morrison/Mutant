@@ -1,20 +1,37 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Mutant.Deploy.Engine;
 using Mutant.Deploy.Factory.TestLevels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace Mutant.Deploy.Engine.Tests
 {
+    struct Info
+    {
+        public string URL;
+        public string Username;
+        public string Password;
+        public string WorkingDirectory;
+    }
+
     [TestClass()]
     public class MainEngineTests
     {
         [TestMethod()]
         public void RunTest()
         {
+            Info MutantInfo = new Info();
+            MutantInfo.URL = "Test";
+            MutantInfo.Username = "Test";
+            MutantInfo.Password = "Test";
+            MutantInfo.WorkingDirectory = "Test";
+
+            string CurrentDirectory = Directory.GetCurrentDirectory();
+            using (StreamWriter file = File.CreateText(CurrentDirectory + @"\.credentials"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, MutantInfo);
+            }
+
             TestLevelFactory factory = new NoTestsFactory();
             TestLevel level = factory.CreateTestLevel();
 
