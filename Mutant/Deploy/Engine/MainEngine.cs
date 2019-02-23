@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mutant.Deploy.Factory.TestLevels;
+using Mutant.Core;
 
 namespace Mutant.Deploy.Engine
 {
@@ -25,10 +24,29 @@ namespace Mutant.Deploy.Engine
             {
                 ant.StartInfo.UseShellExecute = false;
                 ant.StartInfo.FileName = AntHome + @"\bin\ant.bat";
+                ant.StartInfo.Arguments = BuildArguments();
 
                 ant.Start();
                 ant.WaitForExit();
             }
+        }
+
+        private string BuildArguments()
+        {
+            Credentials creds = Credentials.getInstance();
+            string Command = "-buildfile " +
+                "FILE " +
+                "\"Dsf.serverurl=" +
+                creds.URL +
+                "\" " +
+                "\"Dsf.username=" +
+                creds.Username +
+                "\" " +
+                "\"Dsf.password=" +
+                creds.Password +
+                "\" ";
+
+            return Command;
         }
     }
 }

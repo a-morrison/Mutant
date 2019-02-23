@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using ManyConsole;
@@ -42,7 +43,9 @@ namespace Mutant.Core.Commands
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, MutantInfo);
             }
-            
+
+            Console.WriteLine(this.GetType().Assembly.Location);
+
             return 0;
         }
     }

@@ -92,5 +92,9 @@
     <Folder Include="Report\" />
     <Folder Include="Test\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="build.xml" />
+    <Content Include="lib\ant-salesforce.jar" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
