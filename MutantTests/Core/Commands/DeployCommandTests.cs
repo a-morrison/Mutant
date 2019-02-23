@@ -11,14 +11,15 @@ namespace Mutant.Core.Commands.Tests
     [TestClass()]
     public class DeployCommandTests
     {
-        [TestMethod()]
-        public void DeployCommandTest()
+        private readonly DeployCommand command;
+
+        public DeployCommandTests()
         {
-            Assert.Fail();
+            command = new DeployCommand();
         }
 
         [TestMethod()]
-        public void RunTest()
+        public void IsComprehensiveTest()
         {
             Assert.Fail();
         }

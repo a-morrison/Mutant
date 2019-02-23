@@ -26,7 +26,6 @@ namespace Mutant.Core.Commands
 
         public override int Run(string[] remainingArguments)
         {
-            Console.Out.WriteLine("Deploy called!");
             TestLevelFactory TestLevel = new NoTestsFactory();
             ArtificerFactory Artificer = new SelectiveFactory();
 
@@ -46,7 +45,14 @@ namespace Mutant.Core.Commands
             }
 
             Deployment deployment = new Deployment(TestLevel, Artificer);
-            deployment.Deploy();
+            try
+            {
+                deployment.Deploy();
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return 1;
+            }
 
             return 0;
         }

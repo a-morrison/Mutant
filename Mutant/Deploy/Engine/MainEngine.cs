@@ -31,7 +31,7 @@ namespace Mutant.Deploy.Engine
 
         private string BuildArguments()
         {
-            Credentials creds = Credentials.getInstance();
+            Credentials creds = Credentials.GetInstance();
             string BuildFile = AppContext.BaseDirectory + "build.xml ";
             string Command = "-buildfile " +
                 BuildFile +

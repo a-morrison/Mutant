@@ -38,22 +38,7 @@ namespace Mutant.Core.Commands
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, MutantInfo);
             }
-
-            Credentials creds = Credentials.getInstance();
-            string BuildFile = AppContext.BaseDirectory + "build.xml ";
-            string Command = "-buildfile " +
-                BuildFile +
-                "\"-Dsf.serverurl=" +
-                creds.URL +
-                "\" " +
-                "\"-Dsf.username=" +
-                creds.Username +
-                "\" " +
-                "\"-Dsf.password=" +
-                creds.Password +
-                "\" ";
-            Console.WriteLine(Command);
-
+            
             return 0;
         }
     }
