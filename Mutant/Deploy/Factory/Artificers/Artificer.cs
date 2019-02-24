@@ -110,11 +110,13 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
                 else
                 {
-                    Console.Out.WriteLine("No");
+                    Console.Out.WriteLine("File not added for deployment: " + Result.ToString());
                 }
             }
 
-            File.Copy(@"src\package.xml", @"deploy\artifacts\src\package.xml");
+            string SourcePackage = WorkingDirectory + @"\src\package.xml";
+            string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
+            File.Copy(SourcePackage, TargetPackage);
         }
 
         private SplitString Split(string StringToSplit, string SplitLocation)

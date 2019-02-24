@@ -26,11 +26,13 @@ namespace Mutant.Core.Tests
         [TestMethod()]
         public void TestFileExists()
         {
-            Info MutantInfo = new Info();
-            MutantInfo.URL = "Test";
-            MutantInfo.Username = "Test";
-            MutantInfo.Password = "Test";
-            MutantInfo.WorkingDirectory = "Test";
+            Info MutantInfo = new Info
+            {
+                URL = "Test",
+                Username = "Test",
+                Password = "Test",
+                WorkingDirectory = "Test"
+            };
 
             string CurrentDirectory = Directory.GetCurrentDirectory();
             using (StreamWriter file = File.CreateText(CurrentDirectory + @"\.credentials"))

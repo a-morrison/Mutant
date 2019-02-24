@@ -1,6 +1,6 @@
 <project name="Sample usage of Salesforce Ant tasks" default="test" basedir="." xmlns:sf="antlib:com.salesforce">
 
-  <property file="properties/sf.properties"/>
+  <property file="ant.properties/sf.properties"/>
   <property environment="env"/>
 
   <!-- Setting default value for username, password and session id properties to empty string
@@ -22,10 +22,15 @@
       <isset property="sf.sessionId"/>
     </not>
   </condition>
+  <condition property="sf.workingdirectory" value="">
+    <not>
+      <isset property="sf.workingdirectory"/>
+    </not>
+  </condition>
 
   <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
     <classpath>
-      <pathelement location="ant-salesforce/ant-salesforce.jar"/>
+      <pathelement location="lib/ant-salesforce.jar"/>
     </classpath>
   </taskdef>
 
@@ -48,12 +53,12 @@
 
   <!-- Deploy a zip of metadata files to the org -->
   <target name="deployZip">
-    <echo message="*************Creating ${sf.zipFile} *******************************************"/>
-    <zip destfile="${sf.zipFile}">
-      <fileset dir="artifacts/src">
-        <include name="**/classes/*"/>
+    <echo message="*************Creating ${sf.workingdirectory}${sf.zipFile} *******************************************"/>
+    <zip destfile="${sf.workingdirectory}${sf.zipFile}">
+      <fileset dir="deploy/artifacts/src">
+        <include name="**/classes/**"/>
         <include name="**/triggers/**"/>
-        <include name="**/pages/*"/>
+        <include name="**/pages/**"/>
         <include name="**/components/**"/>
         <include name="package.xml"/>
       </fileset>

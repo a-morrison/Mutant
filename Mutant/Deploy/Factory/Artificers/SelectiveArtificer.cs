@@ -18,7 +18,7 @@ namespace Mutant.Deploy.Factory.Artificers
 
                 CreateDirectories();
 
-                Collection<PSObject> results = RunPowershellCommand("git diff --name-only");
+                Collection<PSObject> results = RunPowershellCommand("git diff HEAD^ HEAD --name-only");
 
                 ProcessResults(results, Creds.WorkingDirectory);
             } catch (Exception ex) 

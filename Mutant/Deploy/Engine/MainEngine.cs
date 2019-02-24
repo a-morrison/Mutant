@@ -32,18 +32,22 @@ namespace Mutant.Deploy.Engine
         private string BuildArguments()
         {
             Credentials creds = Credentials.GetInstance();
-            string BuildFile = AppContext.BaseDirectory + "build.xml ";
+            string BuildFile = AppContext.BaseDirectory + "build.xml";
             string Command = "-buildfile " +
-                BuildFile +
-                "\"Dsf.serverurl=" +
+                "\"" + BuildFile + "\" " +
+                "\"-Dsf.serverurl=" +
                 creds.URL +
                 "\" " +
-                "\"Dsf.username=" +
+                "\"-Dsf.username=" +
                 creds.Username +
                 "\" " +
-                "\"Dsf.password=" +
+                "\"-Dsf.password=" +
                 creds.Password +
-                "\" ";
+                "\" " +
+                "\"-Dsf.workingdirectory=" +
+                creds.WorkingDirectory +
+                "\" " +
+                "deployZip";
 
             return Command;
         }
