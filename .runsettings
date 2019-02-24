@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
-	<Functions>
-	   <Include>
-		 <Function>**\*mutant*.dll</Function>
-	   </Include>
-	   <Exclude>
-		 <Function>**\*newtonsoft*.dll</Function>
-	   </Exclude>
-	</Functions>
+	<ModulePaths>
+		<Exclude>
+			<ModulePath>newtonsoft.json.dll</ModulePath>
+		</Exclude>
+	</ModulePaths>
 </RunSettings>
