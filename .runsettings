@@ -2,7 +2,7 @@
 <RunSettings>
 	<ModulePaths>
 		<Exclude>
-			<ModulePath>.\*newtonsoft*</ModulePath>
+			<ModulePath>**\*newtonsoft*.dll</ModulePath>
 		</Exclude>
 	</ModulePaths>
 </RunSettings>
