@@ -2,7 +2,7 @@
 <RunSettings>
 	<ModulePaths>
 		<Exclude>
-			<ModulePath>newtonsoft.json.dll</ModulePath>
+			<ModulePath>.\*newtonsoft*</ModulePath>
 		</Exclude>
 	</ModulePaths>
 </RunSettings>
