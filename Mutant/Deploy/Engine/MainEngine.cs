@@ -47,7 +47,7 @@ namespace Mutant.Deploy.Engine
                 "\"-Dsf.workingdirectory=" +
                 creds.WorkingDirectory +
                 "\" " +
-                "deployZip";
+                TestLevel.Target;
 
             return Command;
         }

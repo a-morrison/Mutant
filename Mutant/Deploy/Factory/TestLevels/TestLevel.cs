@@ -2,5 +2,9 @@
 {
     public abstract class TestLevel
     {
+        public abstract string Target
+        {
+            get;
+        }
     }
 }

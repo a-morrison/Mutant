@@ -2,5 +2,6 @@
 {
     public class SomeTests : TestLevel
     {
+        public override string Target => "deployCode";
     }
 }

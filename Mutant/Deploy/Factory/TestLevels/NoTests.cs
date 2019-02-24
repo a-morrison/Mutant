@@ -2,5 +2,6 @@
 {
     public class NoTests : TestLevel
     {
+        public override string Target => "deployZip";
     }
 }
