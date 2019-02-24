@@ -33,4 +33,4 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     codeCoverageEnabled: True
-    runSettingsFile: '.runsettings'
+    runSettingsFile: '$(Build.Repository.LocalPath)\.runsettings'
