@@ -18,8 +18,8 @@ namespace Mutant.Deploy
 
         public void Deploy()
         {
-            Artificer.CreateArtifact();
             Artificer.BaseCommit = BaseCommit;
+            Artificer.CreateArtifact();
 
             MainEngine runner = new MainEngine(TestLevel);
             runner.Run();

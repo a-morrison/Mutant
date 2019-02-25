@@ -68,6 +68,7 @@ namespace Mutant.Deploy.Factory.Artificers
 
                 powershell.AddScript(Command);
 
+                Console.WriteLine(powershell.Commands);
                 results = powershell.Invoke();
             }
 
@@ -110,8 +111,11 @@ namespace Mutant.Deploy.Factory.Artificers
                     string metaFileName = copyPath.Right + "-meta.xml";
 
                     string targetDirectoryForMetaFile = directoryByFileType[path.Right] + metaFileName;
-                    File.Copy(fullPath, targetDirectoryForFile);
-                    File.Copy(metaFileSource, targetDirectoryForMetaFile);
+                    Console.WriteLine("Adding " + copyPath.Right + " to deployment");
+                    Console.WriteLine(fullPath);
+                    Console.WriteLine(targetDirectoryForFile);
+                    File.Copy(fullPath, targetDirectoryForFile, true);
+                    File.Copy(metaFileSource, targetDirectoryForMetaFile, true);
                 }
                 else
                 {

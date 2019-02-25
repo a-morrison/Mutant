@@ -24,7 +24,12 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
 
                 string Command = String.Format("git diff {0} --name-only", BaseCommit);
+                Console.WriteLine(Command);
                 Collection<PSObject> results = RunPowershellCommand(Command);
+                foreach (var s in results)
+                {
+                    Console.WriteLine(s.ToString());
+                }
 
                 ProcessResults(results, Creds.WorkingDirectory);
             } catch (Exception ex) 
