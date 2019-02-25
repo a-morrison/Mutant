@@ -10,7 +10,7 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public abstract class Artificer
     {
-        protected string BaseCommit
+        public string BaseCommit
         {
             get; set;
         }
