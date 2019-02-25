@@ -10,6 +10,11 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public abstract class Artificer
     {
+        protected string BaseCommit
+        {
+            get; set;
+        }
+
         public abstract void CreateArtifact();
 
         private struct SplitString

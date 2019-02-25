@@ -1,7 +1,6 @@
 ﻿using Mutant.Core;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Management.Automation;
 
 namespace Mutant.Deploy.Factory.Artificers
@@ -18,7 +17,14 @@ namespace Mutant.Deploy.Factory.Artificers
 
                 CreateDirectories();
 
-                Collection<PSObject> results = RunPowershellCommand("git diff HEAD^ HEAD --name-only");
+                string Difference = "HEAD^ HEAD";
+                if (!String.IsNullOrEmpty(BaseCommit))
+                {
+                    Difference = BaseCommit;
+                }
+
+                string Command = String.Format("git diff {0} --name-only", BaseCommit);
+                Collection<PSObject> results = RunPowershellCommand(Command);
 
                 ProcessResults(results, Creds.WorkingDirectory);
             } catch (Exception ex) 

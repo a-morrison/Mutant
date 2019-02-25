@@ -8,6 +8,7 @@ namespace Mutant.Deploy
     {
         private TestLevel TestLevel;
         private Artificer Artificer;
+        public string BaseCommit { private get; set; }
 
         public Deployment(TestLevelFactory TestLevel, ArtificerFactory Artificer)
         {
@@ -18,6 +19,7 @@ namespace Mutant.Deploy
         public void Deploy()
         {
             Artificer.CreateArtifact();
+            Artificer.BaseCommit = BaseCommit;
 
             MainEngine runner = new MainEngine(TestLevel);
             runner.Run();

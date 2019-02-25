@@ -11,6 +11,7 @@ namespace Mutant.Core.Commands
         private bool IsComprehensive = false;
         private bool RunAllTests = false;
         private bool RunSelectiveTests = false;
+        private string BaseCommit;
 
         public DeployCommand()
         {
@@ -22,6 +23,7 @@ namespace Mutant.Core.Commands
                 v => IsComprehensive = v == null ? true : Convert.ToBoolean(v));
             this.HasOption("t|run-tests:", "Optional. Required if pushing to production.", v => RunAllTests = v == null ? true : Convert.ToBoolean(v));
             this.HasOption("s|selective-tests:", "Optional. If chosen runs tests based on @test annotation in class.", v => RunSelectiveTests = v == null ? true : Convert.ToBoolean(v));
+            this.HasOption("c|base-commit:", "Optional. Deploys changes from HEAD to specified commit hash.", v => BaseCommit = v);
         }
 
         public override int Run(string[] remainingArguments)
@@ -45,6 +47,11 @@ namespace Mutant.Core.Commands
             }
 
             Deployment deployment = new Deployment(TestLevel, Artificer);
+            if (BaseCommit != null)
+            {
+                deployment.BaseCommit = BaseCommit;
+            }
+
             try
             {
                 deployment.Deploy();
