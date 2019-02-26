@@ -23,7 +23,7 @@ namespace Mutant.Deploy.Factory.Artificers
                     Difference = "HEAD^^ " + BaseCommit;
                 }
 
-                string Command = String.Format("git diff {0} --name-only", BaseCommit);
+                string Command = String.Format("git diff {0} --name-only", Difference);
                 Console.WriteLine(Command);
                 Collection<PSObject> results = RunPowershellCommand(Command);
                 foreach (var s in results)

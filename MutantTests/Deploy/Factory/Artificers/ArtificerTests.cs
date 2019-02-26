@@ -68,28 +68,29 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, MutantInfo);
             }
-            Directory.CreateDirectory(MutantInfo.WorkingDirectory + @"\src\classes");
-            File.Create(Directory.GetCurrentDirectory() + @"\src\package.xml");
             Collection<PSObject> results = new Collection<PSObject>();
             results = RunPowershellCommand("git init", MutantInfo.WorkingDirectory);
-
+            Directory.CreateDirectory(MutantInfo.WorkingDirectory + @"\src\classes");
+            File.Create(Directory.GetCurrentDirectory() + @"\src\package.xml");
+            
             File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls");
             File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls-meta.xml");
 
-            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"\src\classes\test1.cls", MutantInfo.WorkingDirectory);
-            results = RunPowershellCommand("git commit -a", MutantInfo.WorkingDirectory);
-            results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
-            string BaseCommit = results[0].ToString();
+            results = RunPowershellCommand("git update-index --no-assume-unchanged " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git commit -m \"some\"", MutantInfo.WorkingDirectory);
+            //results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
+            //string BaseCommit = results[0].ToString();
 
             File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls");
             File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls-meta.xml");
-            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"\src\classes\test2.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git update-index --no-assume-unchanged " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git commit -m \"testagain\"", MutantInfo.WorkingDirectory);
-            results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
-            BaseCommit = results[0].ToString();
-
-            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"\src\classes\test1.cls", MutantInfo.WorkingDirectory);
-            results = RunPowershellCommand("git commit -m \"testagain2\"", MutantInfo.WorkingDirectory);
+            //results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
+            //string BaseCommit = results[0].ToString();
+            results = RunPowershellCommand("git log --pretty=format:%H", MutantInfo.WorkingDirectory);
+            string BaseCommit = results[1].ToString();
 
             ArtificerFactory Factory = new SelectiveFactory();
             Artificer artificer = Factory.CreateArtificer();
@@ -107,6 +108,7 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
 
             using (PowerShell powershell = PowerShell.Create())
             {
+                Console.WriteLine(Command + " in " + WorkingDirectory);
                 powershell.AddScript(String.Format(@"cd {0}", WorkingDirectory));
 
                 powershell.AddScript(Command);

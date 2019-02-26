@@ -10,12 +10,19 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public abstract class Artificer
     {
+        private string _baseCommit;
+
         public string BaseCommit
         {
-            get; set;
+            get { return _baseCommit; }
+            set {
+                _baseCommit = FindBaseCommit(value);
+            }
         }
 
         public abstract void CreateArtifact();
+
+        private readonly string GitEmptyTree = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
         private struct SplitString
         {
@@ -69,6 +76,11 @@ namespace Mutant.Deploy.Factory.Artificers
                 powershell.AddScript(Command);
                 
                 results = powershell.Invoke();
+
+                foreach (var s in results)
+                {
+                    Console.WriteLine(s.ToString());
+                }
             }
 
             return results;
@@ -134,6 +146,26 @@ namespace Mutant.Deploy.Factory.Artificers
             split.Left = String.Join(".", splited.Take(splited.Length - 1));
             split.Right = splited.Last();
             return split;
+        }
+
+        private string FindBaseCommit(string Commit)
+        {
+            Collection<PSObject> results = RunPowershellCommand("git log --pretty=format:%H");
+            results = (Collection<PSObject>) results.Reverse<PSObject>();
+            foreach (var s in results)
+            {
+                Console.WriteLine(s.ToString());
+            }
+            Console.WriteLine("In base commit");
+            PSObject CommitResult = results.First(r => r.ToString() == Commit);
+            if (results.IndexOf(CommitResult) == 0)
+            {
+                return GitEmptyTree;
+            }
+
+            Console.WriteLine(results.IndexOf(CommitResult));
+            PSObject Previous = results.ElementAt(results.IndexOf(CommitResult) - 1);
+            return Previous.ToString();
         }
     }
 }
