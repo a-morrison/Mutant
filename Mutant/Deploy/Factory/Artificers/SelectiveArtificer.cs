@@ -20,7 +20,7 @@ namespace Mutant.Deploy.Factory.Artificers
                 string Difference = "HEAD^ HEAD";
                 if (!String.IsNullOrEmpty(BaseCommit))
                 {
-                    Difference = BaseCommit;
+                    Difference = "HEAD^^ " + BaseCommit;
                 }
 
                 string Command = String.Format("git diff {0} --name-only", BaseCommit);

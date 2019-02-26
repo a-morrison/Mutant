@@ -52,10 +52,15 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 URL = "Test",
                 Username = "Test",
                 Password = "Test",
-                WorkingDirectory = @"C:\temp\MutantTests"
+                WorkingDirectory = @"C:\temp\MutantTests\"
             };
 
-            
+            if (Directory.Exists(MutantInfo.WorkingDirectory + @".git\"))
+            {
+                Console.WriteLine("Deleteing .git");
+                DeleteDirectory(MutantInfo.WorkingDirectory + @".git\");
+            }
+            Console.WriteLine("Deleted .git");
             Directory.CreateDirectory(MutantInfo.WorkingDirectory);
             Directory.SetCurrentDirectory(MutantInfo.WorkingDirectory);
             using (StreamWriter file = File.CreateText(MutantInfo.WorkingDirectory + @"\.credentials"))
@@ -63,30 +68,32 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, MutantInfo);
             }
-            Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\src\classes");
-            //Directory.Delete(Directory.GetCurrentDirectory() + @"\.git", true);
+            Directory.CreateDirectory(MutantInfo.WorkingDirectory + @"\src\classes");
             File.Create(Directory.GetCurrentDirectory() + @"\src\package.xml");
-            Collection<PSObject> results = RunPowershellCommand("git init");
+            Collection<PSObject> results = new Collection<PSObject>();
+            results = RunPowershellCommand("git init", MutantInfo.WorkingDirectory);
 
-            File.Create(Directory.GetCurrentDirectory() + @"\src\classes\test1.cls");
-            File.Create(Directory.GetCurrentDirectory() + @"\src\classes\test1.cls-meta.xml");
-            Console.WriteLine(File.Exists(@"src\classes\test1.cls"));
-            Console.WriteLine("git add " + Directory.GetCurrentDirectory() + "\\src\\classes\\test1.cls");
-            results = RunPowershellCommand("git add " + Directory.GetCurrentDirectory() + "\\src\\classes\\test1.cls");
-            results = RunPowershellCommand("git status");
-            results = RunPowershellCommand("git commit -m \"test\"");
-            results = RunPowershellCommand("git rev-parse HEAD");
+            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls");
+            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls-meta.xml");
+
+            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"\src\classes\test1.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git commit -a", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
             string BaseCommit = results[0].ToString();
-            
-            File.Create(Directory.GetCurrentDirectory() + @"\src\classes\test2.cls");
-            File.Create(Directory.GetCurrentDirectory() + @"\src\classes\test2.cls-meta.xml");
-            results = RunPowershellCommand("git add " + Directory.GetCurrentDirectory() + @"\src\classes\test2.cls");
-            results = RunPowershellCommand("git commit -m \"testagain\"");
-            
+
+            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls");
+            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls-meta.xml");
+            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"\src\classes\test2.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git commit -m \"testagain\"", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
+            BaseCommit = results[0].ToString();
+
+            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"\src\classes\test1.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git commit -m \"testagain2\"", MutantInfo.WorkingDirectory);
 
             ArtificerFactory Factory = new SelectiveFactory();
             Artificer artificer = Factory.CreateArtificer();
-            
+
             artificer.BaseCommit = BaseCommit;
 
             artificer.CreateArtifact();
@@ -94,14 +101,13 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             Assert.IsTrue(File.Exists(MutantInfo.WorkingDirectory + @"\deploy\artifacts\src\classes\test1.cls"));
         }
 
-        private Collection<PSObject> RunPowershellCommand(string Command)
+        private Collection<PSObject> RunPowershellCommand(string Command, string WorkingDirectory)
         {
-            string directory = Directory.GetCurrentDirectory();
             Collection<PSObject> results = new Collection<PSObject>();
 
             using (PowerShell powershell = PowerShell.Create())
             {
-                powershell.AddScript(String.Format(@"cd {0}", directory));
+                powershell.AddScript(String.Format(@"cd {0}", WorkingDirectory));
 
                 powershell.AddScript(Command);
 
@@ -114,6 +120,21 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             }
 
             return results;
+        }
+
+        private void DeleteDirectory(string d)
+        {
+            foreach (var sub in Directory.EnumerateDirectories(d))
+            {
+                DeleteDirectory(sub);
+            }
+            foreach (var f in Directory.EnumerateFiles(d))
+            {
+                var fi = new FileInfo(f);
+                fi.Attributes = FileAttributes.Normal;
+                fi.Delete();
+            }
+            Directory.Delete(d);
         }
     }
 }

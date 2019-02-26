@@ -67,8 +67,7 @@ namespace Mutant.Deploy.Factory.Artificers
                 powershell.AddScript(String.Format(@"cd {0}", directory));
 
                 powershell.AddScript(Command);
-
-                Console.WriteLine(powershell.Commands);
+                
                 results = powershell.Invoke();
             }
 
@@ -114,8 +113,8 @@ namespace Mutant.Deploy.Factory.Artificers
                     Console.WriteLine("Adding " + copyPath.Right + " to deployment");
                     Console.WriteLine(fullPath);
                     Console.WriteLine(targetDirectoryForFile);
-                    File.Copy(fullPath, targetDirectoryForFile, true);
-                    File.Copy(metaFileSource, targetDirectoryForMetaFile, true);
+                    File.Copy(fullPath, targetDirectoryForFile);
+                    File.Copy(metaFileSource, targetDirectoryForMetaFile);
                 }
                 else
                 {
