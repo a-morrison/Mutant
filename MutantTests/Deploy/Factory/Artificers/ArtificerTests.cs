@@ -79,16 +79,13 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             results = RunPowershellCommand("git update-index --no-assume-unchanged " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git commit -m \"some\"", MutantInfo.WorkingDirectory);
-            //results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
-            //string BaseCommit = results[0].ToString();
 
             File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls");
             File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls-meta.xml");
+
             results = RunPowershellCommand("git update-index --no-assume-unchanged " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git commit -m \"testagain\"", MutantInfo.WorkingDirectory);
-            //results = RunPowershellCommand("git rev-parse HEAD", MutantInfo.WorkingDirectory);
-            //string BaseCommit = results[0].ToString();
             results = RunPowershellCommand("git log --pretty=format:%H", MutantInfo.WorkingDirectory);
             string BaseCommit = results[1].ToString();
 
@@ -100,6 +97,7 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             artificer.CreateArtifact();
 
             Assert.IsTrue(File.Exists(MutantInfo.WorkingDirectory + @"\deploy\artifacts\src\classes\test1.cls"));
+            Assert.IsTrue(File.Exists(MutantInfo.WorkingDirectory + @"\deploy\artifacts\src\classes\test2.cls"));
         }
 
         private Collection<PSObject> RunPowershellCommand(string Command, string WorkingDirectory)

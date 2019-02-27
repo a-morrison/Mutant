@@ -11,21 +11,9 @@ namespace Mutant.Core
         public string URL { get; private set; }
         public string WorkingDirectory { get; private set; }
 
-        private static Credentials Credential;
-
-        private Credentials()
+        public Credentials()
         {
             Load();
-        }
-        
-        public static Credentials GetInstance()
-        {
-            if (Credential == null)
-            {
-                Credential = new Credentials();
-            }
-            
-            return Credential;
         }
 
         private void Load()

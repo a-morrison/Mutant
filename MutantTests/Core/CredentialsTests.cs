@@ -15,7 +15,7 @@ namespace Mutant.Core.Tests
             Credentials Creds = null;
             try
             {
-                Creds = Credentials.GetInstance();
+                Creds = new Credentials();
             } catch (Exception ex)
             {
                 Assert.IsFalse(File.Exists(WorkingDirectory + @"\.credentials"));
@@ -41,7 +41,7 @@ namespace Mutant.Core.Tests
                 serializer.Serialize(file, MutantInfo);
             }
 
-            Credentials Creds = Credentials.GetInstance();
+            Credentials Creds = new Credentials();
 
             StringAssert.Equals(Creds.Username, MutantInfo.Username);
             StringAssert.Equals(Creds.Password, MutantInfo.Password);

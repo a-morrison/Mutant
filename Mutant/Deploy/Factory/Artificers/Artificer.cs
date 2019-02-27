@@ -16,7 +16,10 @@ namespace Mutant.Deploy.Factory.Artificers
         {
             get { return _baseCommit; }
             set {
-                _baseCommit = FindBaseCommit(value);
+                if (value != null)
+                {
+                    _baseCommit = FindBaseCommit(value);
+                }
             }
         }
 
@@ -71,6 +74,7 @@ namespace Mutant.Deploy.Factory.Artificers
 
             using (PowerShell powershell = PowerShell.Create())
             {
+                Console.WriteLine(Command);
                 powershell.AddScript(String.Format(@"cd {0}", directory));
 
                 powershell.AddScript(Command);
@@ -151,20 +155,20 @@ namespace Mutant.Deploy.Factory.Artificers
         private string FindBaseCommit(string Commit)
         {
             Collection<PSObject> results = RunPowershellCommand("git log --pretty=format:%H");
-            results = (Collection<PSObject>) results.Reverse<PSObject>();
-            foreach (var s in results)
+            List<PSObject> reversedResults = results.Reverse().ToList();
+            foreach (var s in reversedResults)
             {
                 Console.WriteLine(s.ToString());
             }
-            Console.WriteLine("In base commit");
-            PSObject CommitResult = results.First(r => r.ToString() == Commit);
-            if (results.IndexOf(CommitResult) == 0)
+
+            PSObject CommitResult = reversedResults.First(r => r.ToString() == Commit);
+            if (reversedResults.IndexOf(CommitResult) == 0)
             {
                 return GitEmptyTree;
             }
 
-            Console.WriteLine(results.IndexOf(CommitResult));
-            PSObject Previous = results.ElementAt(results.IndexOf(CommitResult) - 1);
+            Console.WriteLine(reversedResults.IndexOf(CommitResult));
+            PSObject Previous = reversedResults.ElementAt(reversedResults.IndexOf(CommitResult) - 1);
             return Previous.ToString();
         }
     }

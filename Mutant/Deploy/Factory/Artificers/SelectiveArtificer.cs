@@ -11,7 +11,7 @@ namespace Mutant.Deploy.Factory.Artificers
         {
             try
             {
-                Credentials Creds = Credentials.GetInstance();
+                Credentials Creds = new Credentials();
 
                 DestroyExistingArtifacts();
 
@@ -20,16 +20,11 @@ namespace Mutant.Deploy.Factory.Artificers
                 string Difference = "HEAD^ HEAD";
                 if (!String.IsNullOrEmpty(BaseCommit))
                 {
-                    Difference = "HEAD^^ " + BaseCommit;
+                    Difference = "HEAD " + BaseCommit;
                 }
 
                 string Command = String.Format("git diff {0} --name-only", Difference);
-                Console.WriteLine(Command);
                 Collection<PSObject> results = RunPowershellCommand(Command);
-                foreach (var s in results)
-                {
-                    Console.WriteLine(s.ToString());
-                }
 
                 ProcessResults(results, Creds.WorkingDirectory);
             } catch (Exception ex) 
