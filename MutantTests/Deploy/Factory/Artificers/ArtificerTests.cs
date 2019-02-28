@@ -121,7 +121,10 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 powershell.AddScript(Command);
 
                 results = powershell.Invoke();
-
+                if (results.Count == 0)
+                {
+                    Console.WriteLine("Command failed.");
+                }
                 foreach (var s in results)
                 {
                     Console.WriteLine(s.ToString());
