@@ -156,18 +156,13 @@ namespace Mutant.Deploy.Factory.Artificers
         {
             Collection<PSObject> results = RunPowershellCommand("git log --pretty=format:%H");
             List<PSObject> reversedResults = results.Reverse().ToList();
-            foreach (var s in reversedResults)
-            {
-                Console.WriteLine(s.ToString());
-            }
 
             PSObject CommitResult = reversedResults.First(r => r.ToString() == Commit);
             if (reversedResults.IndexOf(CommitResult) == 0)
             {
                 return GitEmptyTree;
             }
-
-            Console.WriteLine(reversedResults.IndexOf(CommitResult));
+            
             PSObject Previous = reversedResults.ElementAt(reversedResults.IndexOf(CommitResult) - 1);
             return Previous.ToString();
         }
