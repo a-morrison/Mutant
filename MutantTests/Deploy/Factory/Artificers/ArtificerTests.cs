@@ -79,6 +79,8 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             }
             Collection<PSObject> results = new Collection<PSObject>();
             results = RunPowershellCommand("git init", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git config user.name \"Alex Morrison\"", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git config user.email \"a.morrison17@hotmail.com\"", MutantInfo.WorkingDirectory);
             Directory.CreateDirectory(MutantInfo.WorkingDirectory + @"\src\classes");
             File.Create(Directory.GetCurrentDirectory() + @"\src\package.xml");
 
