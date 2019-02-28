@@ -60,7 +60,16 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 Console.WriteLine("Deleteing .git");
                 DeleteDirectory(MutantInfo.WorkingDirectory + @".git\");
             }
-            Console.WriteLine("Deleted .git");
+            if (Directory.Exists(MutantInfo.WorkingDirectory + @"src\"))
+            {
+                Console.WriteLine("Deleteing src");
+                DeleteDirectory(MutantInfo.WorkingDirectory + @"src\");
+            }
+            if (Directory.Exists(MutantInfo.WorkingDirectory + @"deploy\"))
+            {
+                Console.WriteLine("Deleteing deploy");
+                DeleteDirectory(MutantInfo.WorkingDirectory + @"deploy\");
+            }
             Directory.CreateDirectory(MutantInfo.WorkingDirectory);
             Directory.SetCurrentDirectory(MutantInfo.WorkingDirectory);
             using (StreamWriter file = File.CreateText(MutantInfo.WorkingDirectory + @"\.credentials"))
@@ -72,19 +81,19 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             results = RunPowershellCommand("git init", MutantInfo.WorkingDirectory);
             Directory.CreateDirectory(MutantInfo.WorkingDirectory + @"\src\classes");
             File.Create(Directory.GetCurrentDirectory() + @"\src\package.xml");
-            
-            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls");
-            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls-meta.xml");
+
+            using (File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls")) { }
+            using (File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test1.cls-meta.xml")) { }
 
             results = RunPowershellCommand("git update-index --no-assume-unchanged " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
-            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git add -f " + MutantInfo.WorkingDirectory + @"src\classes\test1.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git commit -m \"some\"", MutantInfo.WorkingDirectory);
 
-            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls");
-            File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls-meta.xml");
+            using (File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls")) { }
+            using (File.Create(MutantInfo.WorkingDirectory + @"\src\classes\test2.cls-meta.xml")) { }
 
             results = RunPowershellCommand("git update-index --no-assume-unchanged " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
-            results = RunPowershellCommand("git add " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
+            results = RunPowershellCommand("git add -f " + MutantInfo.WorkingDirectory + @"src\classes\test2.cls", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git commit -m \"testagain\"", MutantInfo.WorkingDirectory);
             results = RunPowershellCommand("git log --pretty=format:%H", MutantInfo.WorkingDirectory);
             string BaseCommit = results[1].ToString();
