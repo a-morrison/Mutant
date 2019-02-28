@@ -123,7 +123,7 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 results = powershell.Invoke();
                 if (powershell.HadErrors)
                 {
-                    Console.WriteLine(powershell.Streams.Error);
+                    Console.WriteLine(powershell.Streams.Error.ToString());
                 }
                 foreach (var s in results)
                 {
