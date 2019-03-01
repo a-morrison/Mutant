@@ -6,7 +6,7 @@ namespace Mutant.Deploy.Factory.Artificers
     {
         public override void CreateArtifact()
         {
-            throw new NotImplementedException();
+            //No artifact needed for Comprehensive deployment
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class AllTests : TestLevel
     {
-        public override string Target => "deployZip";
+        public override string Target => "comprehensiveDeploment";
     }
 }
