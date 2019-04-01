@@ -22,7 +22,7 @@ steps:
 - script: dotnet restore
 
 - task: DotNetCoreCLI@1
-  diplayName: Build
+  displayName: Build
   inputs:
     command: build
     projects: '**/*.csproj'
