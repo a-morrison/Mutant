@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -21,9 +21,9 @@
   </PropertyGroup>
   <ItemGroup>
 	<PackageReference Include="ManyConsole" Version="1.0.0.4" />
+	<PackageReference Include="Microsoft.PowerShell.SDK" Version="6.2.0" />
 	<PackageReference Include="Mono.Options" Version="5.3.0.1" />
 	<PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-	<PackageReference Include="System.Management.Automation" Version="3.0.0.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
