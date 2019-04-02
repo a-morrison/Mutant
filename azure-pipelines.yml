@@ -28,7 +28,6 @@ steps:
     organization: 'a-morrison-github'
     projectKey: a-morrison_Mutant
     projectName: Mutant
-    scannerMode: CLI
 
 - task: DotNetCoreCLI@1
   displayName: Build
