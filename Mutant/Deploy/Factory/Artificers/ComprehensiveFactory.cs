@@ -4,7 +4,7 @@
     {
         public override Artificer CreateArtificer()
         {
-            return new ComprehensiveArtificer();
+            return new ComprehensiveArtificer(true);
         }
     }
 }

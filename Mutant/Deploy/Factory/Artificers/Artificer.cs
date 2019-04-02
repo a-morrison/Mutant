@@ -10,12 +10,15 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public abstract class Artificer
     {
+
         private string _baseCommit;
+        private readonly string GitEmptyTree = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
 
         public string BaseCommit
         {
             get { return _baseCommit; }
-            set {
+            set
+            {
                 if (value != null)
                 {
                     _baseCommit = FindBaseCommit(value);
@@ -23,17 +26,30 @@ namespace Mutant.Deploy.Factory.Artificers
             }
         }
 
-        public abstract void CreateArtifact();
-
-        private readonly string GitEmptyTree = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-
         private struct SplitString
         {
             public string Left;
             public string Right;
         }
 
-        protected void DestroyExistingArtifacts()
+        protected Artificer()
+        {
+            DestroyExistingArtifacts();
+            CreateDirectories();
+        }
+
+        protected Artificer(Boolean DisableSetup)
+        {
+            if (!DisableSetup)
+            {
+                DestroyExistingArtifacts();
+                CreateDirectories();
+            }
+        }
+        
+        public abstract void CreateArtifact();
+        
+        private void DestroyExistingArtifacts()
         {
             if (Directory.Exists(@"deploy\artifacts"))
             {
@@ -50,7 +66,7 @@ namespace Mutant.Deploy.Factory.Artificers
             }
         }
 
-        protected void CreateDirectories()
+        private void CreateDirectories()
         {
             List<string> directoriesToCreate = new List<string>
             {

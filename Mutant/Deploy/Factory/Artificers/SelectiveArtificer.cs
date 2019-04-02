@@ -7,15 +7,15 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public class SelectiveArtificer : Artificer
     {
+        public SelectiveArtificer() : base()
+        {
+        }
+
         public override void CreateArtifact()
         {
             try
             {
                 Credentials Creds = new Credentials();
-
-                DestroyExistingArtifacts();
-
-                CreateDirectories();
 
                 string Difference = "HEAD^ HEAD";
                 if (!String.IsNullOrEmpty(BaseCommit))
