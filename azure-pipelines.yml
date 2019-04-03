@@ -34,7 +34,7 @@ steps:
   inputs:
     command: build
     projects: '**/*.csproj'
-    arguments: '--configuration Release'
+    arguments: '--configuration Release --output $(build.artifactstagingdirectory)'
 
 - task: DotNetCoreCLI@2
   inputs:
