@@ -46,7 +46,9 @@ steps:
   displayName: Copy Test Results
   inputs:
     sourceFolder: '$(Agent.TempDirectory)'
-    contents: '*.trx'
+    contents: |
+      *.trx
+      **\*.coverage
     targetFolder: '$(Common.TestResultsDirectory)'
     overWrite: true
 
