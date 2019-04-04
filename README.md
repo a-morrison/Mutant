@@ -1,5 +1,5 @@
 ﻿# Mutant
-[![Build Status](https://dev.azure.com/amorrison17/amorrison17/_apis/build/status/a-morrison.Mutant?branchName=master)](https://dev.azure.com/amorrison17/amorrison17/_build/latest?definitionId=1&branchName=master)
+[![Build Status](https://dev.azure.com/amorrison17/Mutant/_apis/build/status/a-morrison.Mutant?branchName=master)](https://dev.azure.com/amorrison17/Mutant/_build/latest?definitionId=1&branchName=master)
 ### Migration using TFS and Ant
 *Disclaimer* Never been tested on an OS other than Windows 10.
 
