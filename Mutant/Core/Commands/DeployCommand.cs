@@ -47,7 +47,7 @@ namespace Mutant.Core.Commands
             }
 
             Deployment deployment = new Deployment(TestLevel, Artificer);
-            if (BaseCommit != null)
+            if (String.IsNullOrWhiteSpace(BaseCommit))
             {
                 deployment.BaseCommit = BaseCommit;
             }

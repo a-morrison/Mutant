@@ -56,7 +56,7 @@
   <target name="deployZip">
     <echo message="*************Creating ${sf.workingdirectory}${sf.zipFile} *******************************************"/>
     <zip destfile="${sf.workingdirectory}${sf.zipFile}">
-      <fileset dir="deploy/artifacts/src">
+      <fileset dir="${sf.workingdirectory}\deploy\artifacts\src">
         <include name="**/classes/**"/>
         <include name="**/triggers/**"/>
         <include name="**/pages/**"/>
@@ -66,7 +66,7 @@
     </zip>
     <echo message="*************Deploying ${sf.zipFile} *******************************************"/>
     <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}"
-               serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.zipFile}" pollWaitMillis="1000"
+               serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.workingdirectory}${sf.zipFile}" pollWaitMillis="1000"
                rollbackOnError="true"/>
   </target>
 
