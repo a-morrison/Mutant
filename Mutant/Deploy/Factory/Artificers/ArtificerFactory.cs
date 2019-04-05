@@ -1,7 +1,22 @@
-﻿namespace Mutant.Deploy.Factory.Artificers
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Mutant.Deploy.Factory.Artificers
 {
-    public abstract class ArtificerFactory
+    class ArtificerFactory : IArtificerFactory
     {
-        public abstract Artificer CreateArtificer();
+        public Artificer GetArtificer(string Type)
+        {
+            switch (Type)
+            {
+                case "Comprehensive":
+                    return new ComprehensiveArtificer(true);
+                case "Selective":
+                    return new SelectiveArtificer();
+                default:
+                    return null;
+            }
+        }
     }
 }
