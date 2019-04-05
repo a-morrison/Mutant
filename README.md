@@ -14,7 +14,38 @@ A publicly accessable backlog and roadmap for Mutant can be found [here](https:/
 although it may not be up to date.
 
 ## Usage
-TODO
+Type `Mutant help` or `Mutant help <command>` for help.
+### Init
+```
+'Init' - Initializes process with common parameters like the required username and password. Should be called first.
+
+Expected usage: Mutant Init <options> 
+<options> available:
+  -t, --target-url=VALUE     Required. URL of target org.
+  -u, --username=VALUE       Required. Username
+  -p, --password=VALUE       Required. Password
+  -d, --working-directory=VALUE
+                             Required. Full path of working directory.
+```
+
+### Deploy
+```
+'Deploy' - Deploys changes
+
+Extra info
+
+Expected usage: Mutant Deploy <options> 
+<options> available:
+  -a, --all[=VALUE]          Optional. If not used, tool defaults to selective
+                               deployment. Comprehensive deployment. Pushes all
+                               objects regardless of status.
+  -t, --run-tests[=VALUE]    Optional. Required if pushing to production.
+  -s, --selective-tests[=VALUE]
+                             Optional. If chosen runs tests based on @test
+                               annotation in class.
+  -c, --base-commit[=VALUE]  Optional. Deploys changes from HEAD to specified
+                               commit hash.
+```
 
 ## Prerequisites
 TODO
