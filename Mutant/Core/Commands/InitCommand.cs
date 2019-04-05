@@ -49,6 +49,6 @@ namespace Mutant.Core.Commands
             }
 
             return 0;
-            }
+        }
     }
 }
