@@ -4,6 +4,8 @@
 	<Version>0.2.1-beta</Version>
 	<PackAsTool>True</PackAsTool>
 	<Authors>Alex Morrison</Authors>
+	<RepositoryUrl>https://github.com/a-morrison/Mutant</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
 	<OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
