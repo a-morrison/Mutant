@@ -16,7 +16,7 @@ namespace Mutant.Core.Tests
             try
             {
                 Creds = new Credentials();
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 Assert.IsFalse(File.Exists(WorkingDirectory + @"\.credentials"));
                 Assert.IsNull(Creds);

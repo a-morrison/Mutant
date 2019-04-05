@@ -31,15 +31,24 @@ namespace Mutant.Core.Commands
         {
             Console.WriteLine(MutantInfo.URL);
             Console.WriteLine(MutantInfo.WorkingDirectory);
-            Directory.SetCurrentDirectory(MutantInfo.WorkingDirectory);
+
+            try
+            {
+                Directory.SetCurrentDirectory(MutantInfo.WorkingDirectory);
+            }
+            catch(DirectoryNotFoundException)
+            {
+                Console.WriteLine(MutantInfo.WorkingDirectory + " is not a valid directory!");
+                return 1;
+            }
 
             using (StreamWriter file = File.CreateText(MutantInfo.WorkingDirectory + @"\.credentials"))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Serialize(file, MutantInfo);
             }
-            
+
             return 0;
-        }
+            }
     }
 }
