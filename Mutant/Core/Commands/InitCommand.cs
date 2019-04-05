@@ -9,10 +9,27 @@ namespace Mutant.Core.Commands
     {
         private struct Info
         {
+            private string _workingDirectory;
+
             public string URL;
             public string Username;
             public string Password;
-            public string WorkingDirectory;
+            public string WorkingDirectory {
+                get
+                {
+                    return _workingDirectory;
+                }
+                set
+                {
+                    if (value.EndsWith(@"\"))
+                    {
+                        _workingDirectory = value.Remove(value.LastIndexOf(@"\"));
+                    } else
+                    {
+                        _workingDirectory = value;
+                    }
+                }
+            }
         }
 
         Info MutantInfo = new Info();
