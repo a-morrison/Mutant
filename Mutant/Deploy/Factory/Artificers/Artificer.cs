@@ -20,7 +20,7 @@ namespace Mutant.Deploy.Factory.Artificers
             get { return _baseCommit; }
             set
             {
-                if (value != null)
+                if (!String.IsNullOrEmpty(value))
                 {
                     _baseCommit = FindBaseCommit(value);
                 }
@@ -111,10 +111,10 @@ namespace Mutant.Deploy.Factory.Artificers
         {
             Dictionary<string, string> directoryByFileType = new Dictionary<string, string>
             {
-                { "cls", @"deploy\artifacts\src\classes\" },
-                { "trigger", @"deploy\artifacts\src\triggers\" },
-                { "page", @"deploy\artifacts\src\pages\" },
-                { "component", @"deploy\artifacts\src\components\" }
+                { "cls", @"\deploy\artifacts\src\classes\" },
+                { "trigger", @"\deploy\artifacts\src\triggers\" },
+                { "page", @"\deploy\artifacts\src\pages\" },
+                { "component", @"\deploy\artifacts\src\components\" }
             };
 
             Dictionary<string, string> placeToSplit = new Dictionary<string, string>
@@ -127,7 +127,13 @@ namespace Mutant.Deploy.Factory.Artificers
 
             foreach (PSObject Result in Results)
             {
-                string fullPath = WorkingDirectory + Result.ToString();
+                string SanitizedResult = Result.ToString();
+                SanitizedResult = SanitizedResult.Replace('/', '\\');
+                if (!SanitizedResult.StartsWith(@"\\") || !SanitizedResult.StartsWith(@"\"))
+                {
+                    SanitizedResult = String.Concat(@"\", SanitizedResult);
+                }
+                string fullPath = WorkingDirectory + SanitizedResult;
                 fullPath = fullPath.Replace('/', '\\');
                 SplitString path = Split(fullPath, ".");
 
@@ -142,7 +148,8 @@ namespace Mutant.Deploy.Factory.Artificers
                     string metaFileSource = fullPath + "-meta.xml";
                     string metaFileName = copyPath.Right + "-meta.xml";
 
-                    string targetDirectoryForMetaFile = directoryByFileType[path.Right] + metaFileName;
+                    string targetDirectoryForMetaFile = WorkingDirectory + 
+                        directoryByFileType[path.Right] + metaFileName;
                     Console.WriteLine("Adding " + copyPath.Right + " to deployment");
                     Console.WriteLine(fullPath);
                     Console.WriteLine(targetDirectoryForFile);
