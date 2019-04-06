@@ -32,17 +32,12 @@ Expected usage: Mutant Init <options>
 ```
 'Deploy' - Deploys changes
 
-Extra info
-
 Expected usage: Mutant Deploy <options> 
 <options> available:
-  -a, --all[=VALUE]          Optional. If not used, tool defaults to selective
+  -d, --deployment-type[=VALUE]          Optional. If not used, tool defaults to selective
                                deployment. Comprehensive deployment. Pushes all
                                objects regardless of status.
-  -t, --run-tests[=VALUE]    Optional. Required if pushing to production.
-  -s, --selective-tests[=VALUE]
-                             Optional. If chosen runs tests based on @test
-                               annotation in class.
+  -t, --test-level[=VALUE]    Optional. Specifies test level.
   -c, --base-commit[=VALUE]  Optional. Deploys changes from HEAD to specified
                                commit hash.
 ```
