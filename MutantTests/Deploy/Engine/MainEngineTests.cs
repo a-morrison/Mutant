@@ -32,8 +32,8 @@ namespace Mutant.Deploy.Engine.Tests
                 serializer.Serialize(file, MutantInfo);
             }
 
-            TestLevelFactory factory = new NoTestsFactory();
-            TestLevel level = factory.CreateTestLevel();
+            TestLevelFactory factory = new TestLevelFactory();
+            TestLevel level = factory.CreateTestLevel("None");
 
             MainEngine engine = new MainEngine(level);
             engine.Run();

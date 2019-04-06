@@ -10,9 +10,9 @@ namespace Mutant.Deploy
         private Artificer Artificer;
         public string BaseCommit { private get; set; }
 
-        public Deployment(TestLevelFactory TestLevel, Artificer Artificer)
+        public Deployment(TestLevel TestLevel, Artificer Artificer)
         {
-            this.TestLevel = TestLevel.CreateTestLevel();
+            this.TestLevel = TestLevel;
             this.Artificer = Artificer;
         }
 

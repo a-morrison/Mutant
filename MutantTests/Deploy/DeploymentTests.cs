@@ -33,10 +33,12 @@ namespace Mutant.Deploy.Tests
                 serializer.Serialize(file, MutantInfo);
             }
 
-            ArtificerFactory artificerFactory = new SelectiveFactory();
-            TestLevelFactory testFactory = new NoTestsFactory();
+            ArtificerFactory artificerFactory = new ArtificerFactory();
+            Artificer selective = artificerFactory.GetArtificer("Selective");
+            TestLevelFactory testFactory = new TestLevelFactory();
+            TestLevel none = testFactory.CreateTestLevel("None");
 
-            Deployment deployment = new Deployment(testFactory, artificerFactory);
+            Deployment deployment = new Deployment(none, selective);
             deployment.Deploy();
         }
     }

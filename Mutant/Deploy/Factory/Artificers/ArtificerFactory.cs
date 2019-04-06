@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Mutant.Deploy.Factory.Artificers
 {
-    class ArtificerFactory : IArtificerFactory
+    public class ArtificerFactory : AbstractArtificerFactory
     {
-        public Artificer GetArtificer(string Type)
+        public override Artificer GetArtificer(string Type)
         {
             switch (Type)
             {
@@ -15,8 +13,20 @@ namespace Mutant.Deploy.Factory.Artificers
                 case "Selective":
                     return new SelectiveArtificer();
                 default:
-                    return null;
+                    string Message = GetArgumentMessage();
+                    throw new ArgumentException(Message);
             }
+        }
+
+        private string GetArgumentMessage()
+        {
+            string Message = "Type should be one of the following: ";
+            foreach (string Type in this.TYPES)
+            {
+                Message = String.Concat(Message, Type + ", ");
+            }
+            Message = Message.Remove(Message.LastIndexOf(','));
+            return Message;
         }
     }
 }
