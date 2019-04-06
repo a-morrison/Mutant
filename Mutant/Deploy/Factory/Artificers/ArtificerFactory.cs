@@ -1,7 +1,32 @@
-﻿namespace Mutant.Deploy.Factory.Artificers
+﻿using System;
+
+namespace Mutant.Deploy.Factory.Artificers
 {
-    public abstract class ArtificerFactory
+    public class ArtificerFactory : AbstractArtificerFactory
     {
-        public abstract Artificer CreateArtificer();
+        public override Artificer GetArtificer(string Type)
+        {
+            switch (Type)
+            {
+                case "Comprehensive":
+                    return new ComprehensiveArtificer(true);
+                case "Selective":
+                    return new SelectiveArtificer();
+                default:
+                    string Message = GetArgumentMessage();
+                    throw new ArgumentException(Message);
+            }
+        }
+
+        private string GetArgumentMessage()
+        {
+            string Message = "Type should be one of the following: ";
+            foreach (string Type in this.TYPES)
+            {
+                Message = String.Concat(Message, Type + ", ");
+            }
+            Message = Message.Remove(Message.LastIndexOf(','));
+            return Message;
+        }
     }
 }

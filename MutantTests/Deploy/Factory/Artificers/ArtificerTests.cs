@@ -36,8 +36,8 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
                 serializer.Serialize(file, MutantInfo);
             }
 
-            ArtificerFactory Factory = new SelectiveFactory();
-            Artificer artificer = Factory.CreateArtificer();
+            ArtificerFactory Factory = new ArtificerFactory();
+            Artificer artificer = Factory.GetArtificer("Selective");
 
             artificer.CreateArtifact();
 
@@ -100,8 +100,8 @@ namespace Mutant.Deploy.Factory.Artificers.Tests
             results = RunPowershellCommand("git log --pretty=format:%H", MutantInfo.WorkingDirectory);
             string BaseCommit = results[1].ToString();
 
-            ArtificerFactory Factory = new SelectiveFactory();
-            Artificer artificer = Factory.CreateArtificer();
+            ArtificerFactory Factory = new ArtificerFactory();
+            Artificer artificer = Factory.GetArtificer("Selective");
 
             artificer.BaseCommit = BaseCommit;
 

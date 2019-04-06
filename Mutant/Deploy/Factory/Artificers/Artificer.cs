@@ -12,9 +12,7 @@ namespace Mutant.Deploy.Factory.Artificers
     {
 
         private string _baseCommit;
-        // Hash of base for every git repo
-        private readonly string GitEmptyTree = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
-
+        
         public string BaseCommit
         {
             get { return _baseCommit; }
@@ -184,6 +182,8 @@ namespace Mutant.Deploy.Factory.Artificers
             PSObject CommitResult = reversedResults.First(r => r.ToString() == Commit);
             if (reversedResults.IndexOf(CommitResult) == 0)
             {
+                // Hash of base for every git repo
+                string GitEmptyTree = "4b825dc642cb6eb9a060e54bf8d69288fbee4904";
                 return GitEmptyTree;
             }
             

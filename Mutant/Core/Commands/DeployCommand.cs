@@ -8,52 +8,36 @@ namespace Mutant.Core.Commands
 {
     public class DeployCommand : ConsoleCommand
     {
-        private bool IsComprehensive = false;
-        private bool RunAllTests = false;
-        private bool RunSelectiveTests = false;
+        private string ArtificeType = "Selective";
+        private string TestType = "None";
         private string BaseCommit;
 
         public DeployCommand()
         {
             this.IsCommand("Deploy", "Deploys changes");
 
-            this.HasLongDescription("Extra info");
-
-            this.HasOption("a|all:", "Optional. If not used, tool defaults to selective deployment. Comprehensive deployment. Pushes all objects regardless of status.", 
-                v => IsComprehensive = v == null ? true : Convert.ToBoolean(v));
-            this.HasOption("t|run-tests:", "Optional. Required if pushing to production.", v => RunAllTests = v == null ? true : Convert.ToBoolean(v));
-            this.HasOption("s|selective-tests:", "Optional. If chosen runs tests based on @test annotation in class.", v => RunSelectiveTests = v == null ? true : Convert.ToBoolean(v));
-            this.HasOption("c|base-commit:", "Optional. Deploys changes from HEAD to specified commit hash.", v => BaseCommit = v);
+            this.HasOption("d|deployment-type:", "Optional. If not used, tool defaults to selective deployment. " +
+                "Comprehensive deployment. Pushes all objects regardless of status.", 
+                v => ArtificeType = v);
+            this.HasOption("t|test-level:", "Optional. Specifies test level.", 
+                v => TestType = v);
+            this.HasOption("c|base-commit:", "Optional. Deploys changes from HEAD to specified commit hash.", 
+                v => BaseCommit = v);
         }
 
         public override int Run(string[] remainingArguments)
         {
-            TestLevelFactory TestLevel = new NoTestsFactory();
-            ArtificerFactory Artificer = new SelectiveFactory();
-
-            if (IsComprehensive)
-            {
-                Artificer = new ComprehensiveFactory();
-            }
-
-            if (RunAllTests)
-            {
-                TestLevel = new AllTestsFactory();
-            }
-
-            if (RunSelectiveTests)
-            {
-                TestLevel = new SomeTestsFactory();
-            }
-
-            Deployment deployment = new Deployment(TestLevel, Artificer);
-            if (String.IsNullOrWhiteSpace(BaseCommit))
-            {
-                deployment.BaseCommit = BaseCommit;
-            }
-
             try
             {
+                TestLevelFactory TestLevel = new TestLevelFactory();
+                TestLevel tests = TestLevel.CreateTestLevel(TestType);
+
+                ArtificerFactory ArtificerFactory = new ArtificerFactory();
+                Artificer artificer = ArtificerFactory.GetArtificer(ArtificeType);
+
+                Deployment deployment = new Deployment(tests, artificer);
+                deployment.BaseCommit = BaseCommit;
+
                 deployment.Deploy();
             } catch (Exception ex)
             {
