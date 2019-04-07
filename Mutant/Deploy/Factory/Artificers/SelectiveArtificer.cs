@@ -7,7 +7,7 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public class SelectiveArtificer : Artificer
     {
-        public SelectiveArtificer() : base()
+        public SelectiveArtificer() : base(false)
         {
         }
 

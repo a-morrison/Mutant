@@ -30,13 +30,7 @@ namespace Mutant.Deploy.Factory.Artificers
             public string Left;
             public string Right;
         }
-
-        protected Artificer()
-        {
-            DestroyExistingArtifacts();
-            CreateDirectories();
-        }
-
+        
         protected Artificer(Boolean DisableSetup)
         {
             if (!DisableSetup)
