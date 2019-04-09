@@ -143,8 +143,6 @@ namespace Mutant.Deploy.Factory.Artificers
                     string targetDirectoryForMetaFile = WorkingDirectory + 
                         directoryByFileType[path.Right] + metaFileName;
                     Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                    Console.WriteLine(fullPath);
-                    Console.WriteLine(targetDirectoryForFile);
                     File.Copy(fullPath, targetDirectoryForFile);
                     File.Copy(metaFileSource, targetDirectoryForMetaFile);
                 }
