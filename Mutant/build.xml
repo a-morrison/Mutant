@@ -27,6 +27,11 @@
       <isset property="sf.workingdirectory"/>
     </not>
   </condition>
+  <condition property="sf.testlevel" value="NoTestRun">
+    <not>
+      <isset property="sf.testlevel"/>
+    </not>
+  </condition>
 
   <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
     <classpath>
@@ -49,7 +54,7 @@
     <echo message="${sf.workingdirectory}\src"/>
     <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" 
                serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="${sf.workingdirectory}\src" 
-               rollbackOnError="true" checkOnly="true"/>
+               rollbackOnError="true" checkOnly="true" testLevel="${sf.testlevel}"/>
   </target>
 
   <!-- Deploy a zip of metadata files to the org -->
@@ -67,7 +72,7 @@
     <echo message="*************Deploying ${sf.zipFile} *******************************************"/>
     <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}"
                serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.workingdirectory}${sf.zipFile}" pollWaitMillis="1000"
-               rollbackOnError="true"/>
+               rollbackOnError="true" testLevel="${sf.testlevel}"/>
   </target>
 
   <!-- Shows deploying code & running tests for code in directory -->

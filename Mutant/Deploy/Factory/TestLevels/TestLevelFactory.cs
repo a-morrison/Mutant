@@ -4,7 +4,7 @@ namespace Mutant.Deploy.Factory.TestLevels
 {
     public class TestLevelFactory : AbstractTestLevelFactory
     {
-        public override TestLevel CreateTestLevel(string Type)
+        public override ITestLevel CreateTestLevel(string Type)
         {
             switch (Type)
             {

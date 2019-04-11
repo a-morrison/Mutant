@@ -7,6 +7,8 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public class SelectiveArtificer : Artificer
     {
+        public override string Target => "deployZip";
+
         public SelectiveArtificer() : base(false)
         {
         }

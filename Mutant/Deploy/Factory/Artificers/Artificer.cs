@@ -41,6 +41,10 @@ namespace Mutant.Deploy.Factory.Artificers
         }
         
         public abstract void CreateArtifact();
+        public abstract string Target
+        {
+            get;
+        }
         
         private void DestroyExistingArtifacts()
         {

@@ -11,6 +11,6 @@ namespace Mutant.Deploy.Factory.TestLevels
             "Some"
         };
 
-        public abstract TestLevel CreateTestLevel(string Type);
+        public abstract ITestLevel CreateTestLevel(string Type);
     }
 }

@@ -1,7 +1,8 @@
 ﻿namespace Mutant.Deploy.Factory.TestLevels
 {
-    public class AllTests : TestLevel
+    public class AllTests : ITestLevel
     {
-        public override string Target => "comprehensiveDeploment";
+        public string Level => "RunLocalTests";
+
     }
 }

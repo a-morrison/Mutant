@@ -7,11 +7,13 @@ namespace Mutant.Deploy.Engine
 {
     public class MainEngine
     {
-        private TestLevel TestLevel;
+        private string _target;
+        private TestLevel _testLevel;
 
-        public MainEngine(TestLevel TestLevel)
+        public MainEngine(TestLevel level, string Target)
         {
-            this.TestLevel = TestLevel;
+            this._target = Target;
+            this._testLevel = level;
         }
 
         public void Run()
@@ -47,7 +49,10 @@ namespace Mutant.Deploy.Engine
                 "\"-Dsf.workingdirectory=" +
                 creds.WorkingDirectory +
                 "\" " +
-                TestLevel.Target;
+                "\"-Dsf.testlevel=" +
+                _testLevel.Level +
+                "\" " +
+                _target;
 
             return Command;
         }

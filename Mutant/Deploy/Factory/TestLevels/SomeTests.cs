@@ -1,7 +1,12 @@
 ﻿namespace Mutant.Deploy.Factory.TestLevels
 {
-    public class SomeTests : TestLevel
+    public class SomeTests : ITestFinder
     {
-        public override string Target => "deployCode";
+        public string Level => "RunSpecifiedTests";
+
+        public void FindTests()
+        {
+            
+        }
     }
 }

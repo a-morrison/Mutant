@@ -21,7 +21,9 @@ namespace Mutant.Deploy
             Artificer.BaseCommit = BaseCommit;
             Artificer.CreateArtifact();
 
-            MainEngine runner = new MainEngine(TestLevel);
+            //create Test level;
+
+            MainEngine runner = new MainEngine(TestLevel, Artificer.Target);
             runner.Run();
         }
     }

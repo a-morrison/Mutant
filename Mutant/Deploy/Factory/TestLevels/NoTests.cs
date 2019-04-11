@@ -1,7 +1,8 @@
 ﻿namespace Mutant.Deploy.Factory.TestLevels
 {
-    public class NoTests : TestLevel
+    public class NoTests : ITestLevel
     {
-        public override string Target => "deployZip";
+        public string Level => "NoTestRun";
+
     }
 }

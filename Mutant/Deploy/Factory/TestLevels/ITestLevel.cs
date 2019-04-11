@@ -1,8 +1,8 @@
 ﻿namespace Mutant.Deploy.Factory.TestLevels
 {
-    public abstract class TestLevel
+    public interface ITestLevel
     {
-        public abstract string Target
+        string Level
         {
             get;
         }
