@@ -1,6 +1,8 @@
 ﻿using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Deploy.Factory.Artificers;
 using Mutant.Deploy.Engine;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Mutant.Deploy
 {
@@ -19,9 +21,10 @@ namespace Mutant.Deploy
         {
             Artificer.CreateArtifact();
 
-            //create Test level;
+            DirectoryInfo rect = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\deploy\artifacts\src\classes");
+            List<string> Tests = TestLevel.FindTests(rect);
 
-            MainEngine runner = new MainEngine(TestLevel, Artificer.Target);
+            MainEngine runner = new MainEngine(Tests, Artificer.Target);
             runner.Run();
         }
     }

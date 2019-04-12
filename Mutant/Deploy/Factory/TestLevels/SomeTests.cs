@@ -5,15 +5,15 @@ using System.Text.RegularExpressions;
 
 namespace Mutant.Deploy.Factory.TestLevels
 {
-    public class SomeTests : ITestFinder
+    public class SomeTests : ITestLevel
     {
         public string Level => "RunSpecifiedTests";
-        private readonly string ANNOTATION_PATTERN = @"@test [a-zA-Z]*";
+        private const string ANNOTATION_PATTERN = @"@test [a-zA-Z]*";
 
-        public List<string> FindTests(DirectoryInfo SourceDirectory, List<string> Classes)
+        public List<string> FindTests(DirectoryInfo SourceDirectory)
         {
             List<string> Tests = new List<string>();
-            foreach (string Class in Classes)
+            foreach (string Class in Directory.EnumerateDirectories(SourceDirectory.ToString(), "*.cls"))
             {
                 string ClassContents = GetClassContents(SourceDirectory, Class);
 

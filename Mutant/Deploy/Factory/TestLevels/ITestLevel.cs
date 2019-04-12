@@ -1,4 +1,7 @@
-﻿namespace Mutant.Deploy.Factory.TestLevels
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace Mutant.Deploy.Factory.TestLevels
 {
     public interface ITestLevel
     {
@@ -6,5 +9,7 @@
         {
             get;
         }
+
+        List<string> FindTests(DirectoryInfo SourceDirectory);
     }
 }

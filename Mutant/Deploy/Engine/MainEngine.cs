@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Core;
@@ -8,12 +9,12 @@ namespace Mutant.Deploy.Engine
     public class MainEngine
     {
         private string _target;
-        private ITestLevel _testLevel;
+        private List<string> _tests;
 
-        public MainEngine(ITestLevel level, string Target)
+        public MainEngine(List<string> Tests, string Target)
         {
             this._target = Target;
-            this._testLevel = level;
+            this._tests = Tests;
         }
 
         public void Run()
