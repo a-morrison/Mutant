@@ -6,11 +6,10 @@ namespace Mutant.Deploy
 {
     public class Deployment
     {
-        private TestLevel TestLevel;
+        private ITestLevel TestLevel;
         private Artificer Artificer;
-        public string BaseCommit { private get; set; }
 
-        public Deployment(TestLevel TestLevel, Artificer Artificer)
+        public Deployment(ITestLevel TestLevel, Artificer Artificer)
         {
             this.TestLevel = TestLevel;
             this.Artificer = Artificer;
@@ -18,7 +17,6 @@ namespace Mutant.Deploy
 
         public void Deploy()
         {
-            Artificer.BaseCommit = BaseCommit;
             Artificer.CreateArtifact();
 
             //create Test level;

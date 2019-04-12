@@ -8,9 +8,9 @@ namespace Mutant.Deploy.Engine
     public class MainEngine
     {
         private string _target;
-        private TestLevel _testLevel;
+        private ITestLevel _testLevel;
 
-        public MainEngine(TestLevel level, string Target)
+        public MainEngine(ITestLevel level, string Target)
         {
             this._target = Target;
             this._testLevel = level;

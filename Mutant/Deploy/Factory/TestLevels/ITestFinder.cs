@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Mutant.Deploy.Factory.TestLevels
 {
     interface ITestFinder : ITestLevel
     {
-        void FindTests();
+        List<string> FindTests(DirectoryInfo SourceDirectory, List<string> Classes);
     }
 }
