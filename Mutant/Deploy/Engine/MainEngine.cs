@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Core;
+using System.IO;
 
 namespace Mutant.Deploy.Engine
 {
     public class MainEngine
     {
         private string _target;
-        private List<string> _tests;
+        private ITestLevel _testLevel;
 
-        public MainEngine(List<string> Tests, string Target)
+        public MainEngine(ITestLevel TestLevel, string Target)
         {
             this._target = Target;
-            this._tests = Tests;
+            this._testLevel = TestLevel;
         }
 
         public void Run()
@@ -35,8 +36,17 @@ namespace Mutant.Deploy.Engine
         private string BuildArguments()
         {
             Credentials creds = new Credentials();
+            string BaseCommand = GetBaseCommand(creds);
+            string TestsCommand = GetTestsCommand(creds);
+            string Command = BaseCommand + TestsCommand + _target;
+
+            return Command;
+        }
+
+        private string GetBaseCommand(Credentials creds)
+        {
             string BuildFile = AppContext.BaseDirectory + "build.xml";
-            string Command = "-buildfile " +
+            string BaseCommand = "-buildfile " +
                 "\"" + BuildFile + "\" " +
                 "\"-Dsf.serverurl=" +
                 creds.URL +
@@ -52,10 +62,27 @@ namespace Mutant.Deploy.Engine
                 "\" " +
                 "\"-Dsf.testlevel=" +
                 _testLevel.Level +
-                "\" " +
-                _target;
+                "\" ";
+            return BaseCommand;
+        }
 
-            return Command;
+        private string GetTestsCommand(Credentials creds)
+        {
+            string TestCommand = "";
+            DirectoryInfo Source = new DirectoryInfo(creds.WorkingDirectory + @"\deploy\artifacts\src\classes");
+            List<string> Tests = _testLevel.FindTests(Source);
+            if (Tests.Count != 0)
+            {
+                TestCommand = "\"-Dsf.tests=";
+                foreach (string Test in Tests)
+                {
+                    string TestWithComma = Test + ",";
+                    TestCommand = String.Concat(TestCommand, TestWithComma);
+                }
+                TestCommand.Remove(TestCommand.LastIndexOf(","));
+                TestCommand += "\" ";
+            }
+            return TestCommand;
         }
     }
 }

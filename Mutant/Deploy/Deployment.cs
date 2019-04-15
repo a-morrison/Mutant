@@ -21,10 +21,7 @@ namespace Mutant.Deploy
         {
             Artificer.CreateArtifact();
 
-            DirectoryInfo rect = new DirectoryInfo(Directory.GetCurrentDirectory() + @"\deploy\artifacts\src\classes");
-            List<string> Tests = TestLevel.FindTests(rect);
-
-            MainEngine runner = new MainEngine(Tests, Artificer.Target);
+            MainEngine runner = new MainEngine(TestLevel, Artificer.Target);
             runner.Run();
         }
     }
