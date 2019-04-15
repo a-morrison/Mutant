@@ -33,9 +33,9 @@ namespace Mutant.Deploy.Engine.Tests
             }
 
             TestLevelFactory factory = new TestLevelFactory();
-            TestLevel level = factory.CreateTestLevel("None");
+            ITestLevel level = factory.CreateTestLevel("None");
 
-            MainEngine engine = new MainEngine(level);
+            MainEngine engine = new MainEngine(level, "deployZip");
             engine.Run();
         }
     }
