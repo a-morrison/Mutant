@@ -8,16 +8,18 @@ namespace Mutant.Deploy.Factory.TestLevels
     public class SomeTests : ITestLevel
     {
         public string Level => "RunSpecifiedTests";
-        private const string ANNOTATION_PATTERN = @"@test [a-zA-Z]*";
+        private const string ANNOTATION_PATTERN = @"@test .*";
 
         public List<string> FindTests(DirectoryInfo SourceDirectory)
         {
+            Console.WriteLine("Here in " + SourceDirectory.ToString());
             List<string> Tests = new List<string>();
-            foreach (string Class in Directory.EnumerateDirectories(SourceDirectory.ToString(), "*.cls"))
+            foreach (string Class in Directory.EnumerateFiles(SourceDirectory.ToString(), "*.cls"))
             {
-                string ClassContents = GetClassContents(SourceDirectory, Class);
+                string ClassContents = GetClassContents(Class);
+                Console.WriteLine(ClassContents);
 
-                Regex TestAnnotation = new Regex(ANNOTATION_PATTERN, RegexOptions.Singleline);
+                Regex TestAnnotation = new Regex(ANNOTATION_PATTERN, RegexOptions.None);
                 Match AnnotationMatch = TestAnnotation.Match(ClassContents);
                 if (AnnotationMatch.Success)
                 {
@@ -29,10 +31,9 @@ namespace Mutant.Deploy.Factory.TestLevels
             return Tests;
         }
 
-        private string GetClassContents(DirectoryInfo SourceDirectory, string ClassName)
+        private string GetClassContents(string ClassName)
         {
-            string FullPath = String.Concat(SourceDirectory.FullName, "\\" + ClassName);
-            StreamReader In = new StreamReader(FullPath);
+            StreamReader In = new StreamReader(ClassName);
 
             string ClassAsString = In.ReadToEnd();
             In.Close();
