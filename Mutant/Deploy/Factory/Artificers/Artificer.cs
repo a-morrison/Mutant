@@ -93,11 +93,6 @@ namespace Mutant.Deploy.Factory.Artificers
                 powershell.AddScript(Command);
                 
                 results = powershell.Invoke();
-
-                foreach (var s in results)
-                {
-                    Console.WriteLine(s.ToString());
-                }
             }
 
             return results;
