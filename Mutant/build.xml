@@ -36,10 +36,7 @@
     </not>
   </condition>
   <condition property="isSelective">
-    <and>
-      <equals arg1="${sf.testlevel}" arg2="RunSpecifiedTests" />
-      <isset property="sf.tests" />
-    </and>
+    <equals arg1="${sf.testlevel}" arg2="RunSpecifiedTests" />
   </condition>
 
   <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">

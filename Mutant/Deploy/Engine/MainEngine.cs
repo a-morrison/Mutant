@@ -71,15 +71,17 @@ namespace Mutant.Deploy.Engine
         {
             DirectoryInfo Source = new DirectoryInfo(creds.WorkingDirectory + @"\deploy\artifacts\src\classes");
             List<string> Tests = _testLevel.FindTests(Source);
-            if (Tests.Count != 0)
-            {
-                CreateTestsXML(Tests);
-            }
+            CreateTestsXML(Tests);
         }
 
         private void CreateTestsXML(List<string> Tests)
         {
             XDocument TestsXML = new XDocument();
+            if (Tests.Count == 0)
+            {
+                XElement Dummy = new XElement("runTest", "Test");
+                TestsXML.Add(Dummy); 
+            }
             foreach (string Test in Tests)
             {
                 XElement runTest = new XElement("runTest", Test);
