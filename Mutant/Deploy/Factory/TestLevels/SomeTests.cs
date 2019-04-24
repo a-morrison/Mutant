@@ -17,7 +17,6 @@ namespace Mutant.Deploy.Factory.TestLevels
             foreach (string Class in Directory.EnumerateFiles(SourceDirectory.ToString(), "*.cls"))
             {
                 string ClassContents = GetClassContents(Class);
-                Console.WriteLine(ClassContents);
 
                 Regex TestAnnotation = new Regex(ANNOTATION_PATTERN, RegexOptions.None);
                 Match AnnotationMatch = TestAnnotation.Match(ClassContents);
