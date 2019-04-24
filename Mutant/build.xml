@@ -1,3 +1,6 @@
+ <!DOCTYPE project [
+      <!ENTITY tests SYSTEM "file:./tests.xml">
+]>
 <project name="Sample usage of Salesforce Ant tasks" default="test" basedir="." xmlns:sf="antlib:com.salesforce">
 
   <property file="ant_properties/sf.properties"/>
@@ -88,11 +91,7 @@
     <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}"
                serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.workingdirectory}${sf.zipFile}" pollWaitMillis="1000"
                rollbackOnError="true" testLevel="${sf.testlevel}">
-      <for list="${sf.tests}" param="test.list.item" delimiter="," trim="true">
-        <sequential>
-          <runTest>@{test.list.item}</runTest>
-        </sequential>
-      </for>
+      &tests;
     </sf:deploy>
   </target>
 
