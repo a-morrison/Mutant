@@ -4,6 +4,7 @@ using System.Diagnostics;
 using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Core;
 using System.IO;
+using System.Xml.Linq;
 
 namespace Mutant.Deploy.Engine
 {
@@ -37,8 +38,8 @@ namespace Mutant.Deploy.Engine
         {
             Credentials creds = new Credentials();
             string BaseCommand = GetBaseCommand(creds);
-            string TestsCommand = GetTestsCommand(creds);
-            string Command = BaseCommand + TestsCommand + _target;
+            FindTests(creds);
+            string Command = BaseCommand + _target;
 
             return Command;
         }
@@ -66,23 +67,26 @@ namespace Mutant.Deploy.Engine
             return BaseCommand;
         }
 
-        private string GetTestsCommand(Credentials creds)
+        private void FindTests(Credentials creds)
         {
-            string TestCommand = "";
             DirectoryInfo Source = new DirectoryInfo(creds.WorkingDirectory + @"\deploy\artifacts\src\classes");
             List<string> Tests = _testLevel.FindTests(Source);
             if (Tests.Count != 0)
             {
-                TestCommand = "\"-Dsf.tests=";
-                foreach (string Test in Tests)
-                {
-                    string TestWithComma = Test + ",";
-                    TestCommand = String.Concat(TestCommand, TestWithComma);
-                }
-                TestCommand.Remove(TestCommand.LastIndexOf(","));
-                TestCommand += "\" ";
+                CreateTestsXML(Tests);
             }
-            return TestCommand;
+        }
+
+        private void CreateTestsXML(List<string> Tests)
+        {
+            XDocument TestsXML = new XDocument();
+            foreach (string Test in Tests)
+            {
+                XElement runTest = new XElement("runTest", Test);
+                TestsXML.Add(runTest);
+            }
+            string OutputFile = AppContext.BaseDirectory + "tests.xml";
+            TestsXML.Save(OutputFile);
         }
     }
 }
