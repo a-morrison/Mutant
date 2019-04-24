@@ -30,13 +30,13 @@ namespace Mutant.Core.Commands
             try
             {
                 TestLevelFactory TestLevel = new TestLevelFactory();
-                TestLevel tests = TestLevel.CreateTestLevel(TestType);
+                ITestLevel tests = TestLevel.CreateTestLevel(TestType);
 
                 ArtificerFactory ArtificerFactory = new ArtificerFactory();
                 Artificer artificer = ArtificerFactory.GetArtificer(ArtificeType);
+                artificer.BaseCommit = BaseCommit;
 
                 Deployment deployment = new Deployment(tests, artificer);
-                deployment.BaseCommit = BaseCommit;
 
                 deployment.Deploy();
             } catch (Exception ex)

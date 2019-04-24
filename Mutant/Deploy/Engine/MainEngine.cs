@@ -1,17 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Core;
+using System.IO;
+using System.Xml.Linq;
 
 namespace Mutant.Deploy.Engine
 {
     public class MainEngine
     {
-        private TestLevel TestLevel;
+        private string _target;
+        private ITestLevel _testLevel;
 
-        public MainEngine(TestLevel TestLevel)
+        public MainEngine(ITestLevel TestLevel, string Target)
         {
-            this.TestLevel = TestLevel;
+            this._target = Target;
+            this._testLevel = TestLevel;
         }
 
         public void Run()
@@ -32,8 +37,17 @@ namespace Mutant.Deploy.Engine
         private string BuildArguments()
         {
             Credentials creds = new Credentials();
+            string BaseCommand = GetBaseCommand(creds);
+            FindTests(creds);
+            string Command = BaseCommand + _target;
+
+            return Command;
+        }
+
+        private string GetBaseCommand(Credentials creds)
+        {
             string BuildFile = AppContext.BaseDirectory + "build.xml";
-            string Command = "-buildfile " +
+            string BaseCommand = "-buildfile " +
                 "\"" + BuildFile + "\" " +
                 "\"-Dsf.serverurl=" +
                 creds.URL +
@@ -47,9 +61,34 @@ namespace Mutant.Deploy.Engine
                 "\"-Dsf.workingdirectory=" +
                 creds.WorkingDirectory +
                 "\" " +
-                TestLevel.Target;
+                "\"-Dsf.testlevel=" +
+                _testLevel.Level +
+                "\" ";
+            return BaseCommand;
+        }
 
-            return Command;
+        private void FindTests(Credentials creds)
+        {
+            DirectoryInfo Source = new DirectoryInfo(creds.WorkingDirectory + @"\deploy\artifacts\src\classes");
+            List<string> Tests = _testLevel.FindTests(Source);
+            CreateTestsXML(Tests);
+        }
+
+        private void CreateTestsXML(List<string> Tests)
+        {
+            XDocument TestsXML = new XDocument();
+            if (Tests.Count == 0)
+            {
+                XElement Dummy = new XElement("runTest", "Test");
+                TestsXML.Add(Dummy); 
+            }
+            foreach (string Test in Tests)
+            {
+                XElement runTest = new XElement("runTest", Test);
+                TestsXML.Add(runTest);
+            }
+            string OutputFile = AppContext.BaseDirectory + "tests.xml";
+            TestsXML.Save(OutputFile);
         }
     }
 }

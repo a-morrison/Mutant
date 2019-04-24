@@ -1,7 +1,15 @@
-﻿namespace Mutant.Deploy.Factory.TestLevels
+﻿using System.Collections.Generic;
+using System.IO;
+
+namespace Mutant.Deploy.Factory.TestLevels
 {
-    public class NoTests : TestLevel
+    public class NoTests : ITestLevel
     {
-        public override string Target => "deployZip";
+        public string Level => "NoTestRun";
+
+        public List<string> FindTests(DirectoryInfo SourceDirectory)
+        {
+            return new List<string>();
+        }
     }
 }

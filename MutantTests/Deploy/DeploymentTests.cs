@@ -36,7 +36,7 @@ namespace Mutant.Deploy.Tests
             ArtificerFactory artificerFactory = new ArtificerFactory();
             Artificer selective = artificerFactory.GetArtificer("Selective");
             TestLevelFactory testFactory = new TestLevelFactory();
-            TestLevel none = testFactory.CreateTestLevel("None");
+            ITestLevel none = testFactory.CreateTestLevel("None");
 
             Deployment deployment = new Deployment(none, selective);
             deployment.Deploy();

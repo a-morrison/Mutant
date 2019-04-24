@@ -1,3 +1,6 @@
+ <!DOCTYPE project [
+      <!ENTITY tests SYSTEM "file:./tests.xml">
+]>
 <project name="Sample usage of Salesforce Ant tasks" default="test" basedir="." xmlns:sf="antlib:com.salesforce">
 
   <property file="ant_properties/sf.properties"/>
@@ -27,6 +30,14 @@
       <isset property="sf.workingdirectory"/>
     </not>
   </condition>
+  <condition property="sf.testlevel" value="NoTestRun">
+    <not>
+      <isset property="sf.testlevel"/>
+    </not>
+  </condition>
+  <condition property="isSelective">
+    <equals arg1="${sf.testlevel}" arg2="RunSpecifiedTests" />
+  </condition>
 
   <taskdef resource="com/salesforce/antlib.xml" uri="antlib:com.salesforce">
     <classpath>
@@ -49,11 +60,11 @@
     <echo message="${sf.workingdirectory}\src"/>
     <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}" 
                serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" deployRoot="${sf.workingdirectory}\src" 
-               rollbackOnError="true" checkOnly="true"/>
+               rollbackOnError="true" checkOnly="true" testLevel="${sf.testlevel}"/>
   </target>
 
   <!-- Deploy a zip of metadata files to the org -->
-  <target name="deployZip">
+  <target name="createZip">
     <echo message="*************Creating ${sf.workingdirectory}${sf.zipFile} *******************************************"/>
     <zip destfile="${sf.workingdirectory}${sf.zipFile}">
       <fileset dir="${sf.workingdirectory}\deploy\artifacts\src">
@@ -65,9 +76,24 @@
       </fileset>
     </zip>
     <echo message="*************Deploying ${sf.zipFile} *******************************************"/>
+  </target>
+
+  <target name="standardDeployZip" depends="createZip" unless="isSelective">
     <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}"
                serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.workingdirectory}${sf.zipFile}" pollWaitMillis="1000"
-               rollbackOnError="true"/>
+               rollbackOnError="true" testLevel="${sf.testlevel}"/>
+  </target>
+
+  <target name="selectiveDeployZip" depends="createZip" if="isSelective">
+    <sf:deploy username="${sf.username}" password="${sf.password}" sessionId="${sf.sessionId}"
+               serverurl="${sf.serverurl}" maxPoll="${sf.maxPoll}" zipFile="${sf.workingdirectory}${sf.zipFile}" pollWaitMillis="1000"
+               rollbackOnError="true" testLevel="${sf.testlevel}">
+      &tests;
+    </sf:deploy>
+  </target>
+
+  <target name="deployZip" depends="selectiveDeployZip, standardDeployZip">
+    <echo message="Deploying changes..." />
   </target>
 
   <!-- Shows deploying code & running tests for code in directory -->

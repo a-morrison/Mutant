@@ -30,13 +30,7 @@ namespace Mutant.Deploy.Factory.Artificers
             public string Left;
             public string Right;
         }
-
-        protected Artificer()
-        {
-            DestroyExistingArtifacts();
-            CreateDirectories();
-        }
-
+        
         protected Artificer(Boolean DisableSetup)
         {
             if (!DisableSetup)
@@ -47,6 +41,10 @@ namespace Mutant.Deploy.Factory.Artificers
         }
         
         public abstract void CreateArtifact();
+        public abstract string Target
+        {
+            get;
+        }
         
         private void DestroyExistingArtifacts()
         {
@@ -95,11 +93,6 @@ namespace Mutant.Deploy.Factory.Artificers
                 powershell.AddScript(Command);
                 
                 results = powershell.Invoke();
-
-                foreach (var s in results)
-                {
-                    Console.WriteLine(s.ToString());
-                }
             }
 
             return results;
@@ -149,8 +142,6 @@ namespace Mutant.Deploy.Factory.Artificers
                     string targetDirectoryForMetaFile = WorkingDirectory + 
                         directoryByFileType[path.Right] + metaFileName;
                     Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                    Console.WriteLine(fullPath);
-                    Console.WriteLine(targetDirectoryForFile);
                     File.Copy(fullPath, targetDirectoryForFile);
                     File.Copy(metaFileSource, targetDirectoryForMetaFile);
                 }

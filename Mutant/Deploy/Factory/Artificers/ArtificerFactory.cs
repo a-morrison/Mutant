@@ -9,7 +9,7 @@ namespace Mutant.Deploy.Factory.Artificers
             switch (Type)
             {
                 case "Comprehensive":
-                    return new ComprehensiveArtificer(true);
+                    return new ComprehensiveArtificer();
                 case "Selective":
                     return new SelectiveArtificer();
                 default:

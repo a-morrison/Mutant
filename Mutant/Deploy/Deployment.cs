@@ -1,16 +1,17 @@
 ﻿using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Deploy.Factory.Artificers;
 using Mutant.Deploy.Engine;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Mutant.Deploy
 {
     public class Deployment
     {
-        private TestLevel TestLevel;
+        private ITestLevel TestLevel;
         private Artificer Artificer;
-        public string BaseCommit { private get; set; }
 
-        public Deployment(TestLevel TestLevel, Artificer Artificer)
+        public Deployment(ITestLevel TestLevel, Artificer Artificer)
         {
             this.TestLevel = TestLevel;
             this.Artificer = Artificer;
@@ -18,10 +19,9 @@ namespace Mutant.Deploy
 
         public void Deploy()
         {
-            Artificer.BaseCommit = BaseCommit;
             Artificer.CreateArtifact();
 
-            MainEngine runner = new MainEngine(TestLevel);
+            MainEngine runner = new MainEngine(TestLevel, Artificer.Target);
             runner.Run();
         }
     }
