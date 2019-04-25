@@ -49,7 +49,7 @@ namespace Mutant.Deploy
             return SanitizedFiles;
         }
 
-        public void Move()
+        public void Display()
         {
             foreach (string File in Files)
             {
@@ -57,7 +57,6 @@ namespace Mutant.Deploy
                 SplitString path = Spliter.Split(fullPath, ".");
 
                 string splitLocation = placeToSplit[path.Right];
-
                 SplitString copyPath = Spliter.Split(fullPath, splitLocation);
 
                 string targetDirectoryForFile = WorkingDirectory +

@@ -94,7 +94,7 @@ namespace Mutant.Deploy.Factory.Artificers
             }
 
             Artifact ProposedArtifact = new Artifact(WorkingDirectory, Files);
-            ProposedArtifact.Move();
+            ProposedArtifact.Display();
             CopyPackageXML(WorkingDirectory);
         }
 
