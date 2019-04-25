@@ -11,6 +11,10 @@ namespace Mutant.Deploy.Factory.Artificers
 {
     public abstract class Artificer
     {
+        public abstract string Target
+        {
+            get;
+        }
 
         private string _baseCommit;
         
@@ -36,10 +40,6 @@ namespace Mutant.Deploy.Factory.Artificers
         }
         
         public abstract void CreateArtifact();
-        public abstract string Target
-        {
-            get;
-        }
         
         private void DestroyExistingArtifacts()
         {
@@ -77,57 +77,17 @@ namespace Mutant.Deploy.Factory.Artificers
 
         protected void ProcessResults(Collection<PSObject> Results, string WorkingDirectory)
         {
-            Dictionary<string, string> directoryByFileType = new Dictionary<string, string>
-            {
-                { "cls", @"\deploy\artifacts\src\classes\" },
-                { "trigger", @"\deploy\artifacts\src\triggers\" },
-                { "page", @"\deploy\artifacts\src\pages\" },
-                { "component", @"\deploy\artifacts\src\components\" }
-            };
-
-            Dictionary<string, string> placeToSplit = new Dictionary<string, string>
-            {
-                { "cls", @"classes\" },
-                { "trigger", @"triggers\" },
-                { "page", @"pages\" },
-                { "component", @"components\" }
-            };
-
             foreach (PSObject Result in Results)
             {
-                string SanitizedResult = Result.ToString();
-                SanitizedResult = SanitizedResult.Replace('/', '\\');
-                if (!SanitizedResult.StartsWith(@"\\") || !SanitizedResult.StartsWith(@"\"))
-                {
-                    SanitizedResult = String.Concat(@"\", SanitizedResult);
-                }
-                string fullPath = WorkingDirectory + SanitizedResult;
-                fullPath = fullPath.Replace('/', '\\');
-                SplitString path = Spliter.Split(fullPath, ".");
-
-                if (directoryByFileType.ContainsKey(path.Right))
-                {
-                    string splitLocation = placeToSplit[path.Right];
-
-                    SplitString copyPath = Spliter.Split(fullPath, splitLocation);
-
-                    string targetDirectoryForFile = WorkingDirectory + 
-                        directoryByFileType[path.Right] + copyPath.Right;
-                    string metaFileSource = fullPath + "-meta.xml";
-                    string metaFileName = copyPath.Right + "-meta.xml";
-
-                    string targetDirectoryForMetaFile = WorkingDirectory + 
-                        directoryByFileType[path.Right] + metaFileName;
-                    Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                    File.Copy(fullPath, targetDirectoryForFile);
-                    File.Copy(metaFileSource, targetDirectoryForMetaFile);
-                }
-                else
-                {
-                    Console.Out.WriteLine("File not added for deployment: " + Result.ToString());
-                }
+                Artifact ProposedArtifact = new Artifact(WorkingDirectory, Result.ToString());
+                ProposedArtifact.Move();
             }
 
+            CopyPackageXML(WorkingDirectory);
+        }
+
+        private void CopyPackageXML(string WorkingDirectory)
+        {
             string SourcePackage = WorkingDirectory + @"\src\package.xml";
             string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
             File.Copy(SourcePackage, TargetPackage);
