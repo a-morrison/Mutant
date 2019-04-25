@@ -8,7 +8,7 @@ namespace Mutant.Deploy.Factory.TestLevels
     public class SomeTests : ITestLevel
     {
         public string Level => "RunSpecifiedTests";
-        private const string ANNOTATION_PATTERN = @"@test .*";
+        private const string ANNOTATION_PATTERN = @"@test [a-zA-Z_]*";
 
         public List<string> FindTests(DirectoryInfo SourceDirectory)
         {

@@ -1,8 +1,6 @@
 ﻿using Mutant.Deploy.Factory.TestLevels;
 using Mutant.Deploy.Factory.Artificers;
 using Mutant.Deploy.Engine;
-using System.IO;
-using System.Collections.Generic;
 
 namespace Mutant.Deploy
 {

@@ -5,11 +5,16 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Threading;
+using Mutant.Core.Util;
 
 namespace Mutant.Deploy.Factory.Artificers
 {
     public abstract class Artificer
     {
+        public abstract string Target
+        {
+            get;
+        }
 
         private string _baseCommit;
         
@@ -24,12 +29,6 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
             }
         }
-
-        private struct SplitString
-        {
-            public string Left;
-            public string Right;
-        }
         
         protected Artificer(Boolean DisableSetup)
         {
@@ -41,10 +40,6 @@ namespace Mutant.Deploy.Factory.Artificers
         }
         
         public abstract void CreateArtifact();
-        public abstract string Target
-        {
-            get;
-        }
         
         private void DestroyExistingArtifacts()
         {
@@ -80,94 +75,39 @@ namespace Mutant.Deploy.Factory.Artificers
             }
         }
 
-        protected Collection<PSObject> RunPowershellCommand(string Command)
-        {
-            string directory = Directory.GetCurrentDirectory();
-            Collection<PSObject> results = new Collection<PSObject>();
-
-            using (PowerShell powershell = PowerShell.Create())
-            {
-                Console.WriteLine(Command);
-                powershell.AddScript(String.Format(@"cd {0}", directory));
-
-                powershell.AddScript(Command);
-                
-                results = powershell.Invoke();
-            }
-
-            return results;
-        }
-
         protected void ProcessResults(Collection<PSObject> Results, string WorkingDirectory)
         {
-            Dictionary<string, string> directoryByFileType = new Dictionary<string, string>
-            {
-                { "cls", @"\deploy\artifacts\src\classes\" },
-                { "trigger", @"\deploy\artifacts\src\triggers\" },
-                { "page", @"\deploy\artifacts\src\pages\" },
-                { "component", @"\deploy\artifacts\src\components\" }
-            };
-
-            Dictionary<string, string> placeToSplit = new Dictionary<string, string>
-            {
-                { "cls", @"classes\" },
-                { "trigger", @"triggers\" },
-                { "page", @"pages\" },
-                { "component", @"components\" }
-            };
-
+            List<string> Files = new List<string>();
             foreach (PSObject Result in Results)
             {
-                string SanitizedResult = Result.ToString();
-                SanitizedResult = SanitizedResult.Replace('/', '\\');
-                if (!SanitizedResult.StartsWith(@"\\") || !SanitizedResult.StartsWith(@"\"))
-                {
-                    SanitizedResult = String.Concat(@"\", SanitizedResult);
-                }
-                string fullPath = WorkingDirectory + SanitizedResult;
+                string fullPath = WorkingDirectory + Result.ToString();
                 fullPath = fullPath.Replace('/', '\\');
-                SplitString path = Split(fullPath, ".");
-
-                if (directoryByFileType.ContainsKey(path.Right))
+                SplitString path = Spliter.Split(fullPath, ".");
+                if (Artifact.TARGET_DIRECTORIES_BY_EXTENSION.ContainsKey(path.Right))
                 {
-                    string splitLocation = placeToSplit[path.Right];
-
-                    SplitString copyPath = Split(fullPath, splitLocation);
-
-                    string targetDirectoryForFile = WorkingDirectory + 
-                        directoryByFileType[path.Right] + copyPath.Right;
-                    string metaFileSource = fullPath + "-meta.xml";
-                    string metaFileName = copyPath.Right + "-meta.xml";
-
-                    string targetDirectoryForMetaFile = WorkingDirectory + 
-                        directoryByFileType[path.Right] + metaFileName;
-                    Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                    File.Copy(fullPath, targetDirectoryForFile);
-                    File.Copy(metaFileSource, targetDirectoryForMetaFile);
+                    Files.Add(Result.ToString());
                 }
                 else
                 {
-                    Console.Out.WriteLine("File not added for deployment: " + Result.ToString());
+                    Console.WriteLine("File not added for deployment: " + Result.ToString());
                 }
             }
 
+            Artifact ProposedArtifact = new Artifact(WorkingDirectory, Files);
+            ProposedArtifact.Move();
+            CopyPackageXML(WorkingDirectory);
+        }
+
+        private void CopyPackageXML(string WorkingDirectory)
+        {
             string SourcePackage = WorkingDirectory + @"\src\package.xml";
             string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
             File.Copy(SourcePackage, TargetPackage);
         }
 
-        private SplitString Split(string StringToSplit, string SplitLocation)
-        {
-            SplitString split = new SplitString();
-            string[] splited = StringToSplit.Split(new string[] { SplitLocation }, StringSplitOptions.None);
-            split.Left = String.Join(".", splited.Take(splited.Length - 1));
-            split.Right = splited.Last();
-            return split;
-        }
-
         private string FindBaseCommit(string Commit)
         {
-            Collection<PSObject> results = RunPowershellCommand("git log --pretty=format:%H");
+            Collection<PSObject> results = Shell.RunCommand(Directory.GetCurrentDirectory(), "git log --pretty=format:%H");
             List<PSObject> reversedResults = results.Reverse().ToList();
 
             PSObject CommitResult = reversedResults.First(r => r.ToString() == Commit);
