@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Threading;
+using Mutant.Core.Util;
 
 namespace Mutant.Deploy.Factory.Artificers
 {
@@ -80,24 +81,6 @@ namespace Mutant.Deploy.Factory.Artificers
             }
         }
 
-        protected Collection<PSObject> RunPowershellCommand(string Command)
-        {
-            string directory = Directory.GetCurrentDirectory();
-            Collection<PSObject> results = new Collection<PSObject>();
-
-            using (PowerShell powershell = PowerShell.Create())
-            {
-                Console.WriteLine(Command);
-                powershell.AddScript(String.Format(@"cd {0}", directory));
-
-                powershell.AddScript(Command);
-                
-                results = powershell.Invoke();
-            }
-
-            return results;
-        }
-
         protected void ProcessResults(Collection<PSObject> Results, string WorkingDirectory)
         {
             Dictionary<string, string> directoryByFileType = new Dictionary<string, string>
@@ -167,7 +150,7 @@ namespace Mutant.Deploy.Factory.Artificers
 
         private string FindBaseCommit(string Commit)
         {
-            Collection<PSObject> results = RunPowershellCommand("git log --pretty=format:%H");
+            Collection<PSObject> results = Shell.RunCommand(Directory.GetCurrentDirectory(), "git log --pretty=format:%H");
             List<PSObject> reversedResults = results.Reverse().ToList();
 
             PSObject CommitResult = reversedResults.First(r => r.ToString() == Commit);

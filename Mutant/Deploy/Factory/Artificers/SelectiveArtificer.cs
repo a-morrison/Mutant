@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
+using Mutant.Core.Util;
 
 namespace Mutant.Deploy.Factory.Artificers
 {
@@ -26,7 +27,7 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
 
                 string Command = String.Format("git diff {0} --name-only", Difference);
-                Collection<PSObject> results = RunPowershellCommand(Command);
+                Collection<PSObject> results = Shell.RunCommand(Creds.WorkingDirectory, Command);
 
                 ProcessResults(results, Creds.WorkingDirectory);
             } catch (Exception ex) 
