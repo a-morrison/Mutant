@@ -30,9 +30,9 @@ namespace Mutant.Deploy.Factory.Artificers
             }
         }
         
-        protected Artificer(Boolean DisableSetup)
+        protected Artificer(Boolean EnableSetup)
         {
-            if (!DisableSetup)
+            if (EnableSetup)
             {
                 DestroyExistingArtifacts();
                 CreateDirectories();
