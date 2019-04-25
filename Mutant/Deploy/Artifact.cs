@@ -7,16 +7,16 @@ namespace Mutant.Deploy
 {
     public class Artifact
     {
-        private readonly string WorkingDirectory;
-        private readonly string FileName;
-
-        private readonly Dictionary<string, string> directoryByFileType = new Dictionary<string, string>
+        public static readonly Dictionary<string, string> TARGET_DIRECTORIES_BY_EXTENSION = new Dictionary<string, string>
         {
             { "cls", @"\deploy\artifacts\src\classes\" },
             { "trigger", @"\deploy\artifacts\src\triggers\" },
             { "page", @"\deploy\artifacts\src\pages\" },
             { "component", @"\deploy\artifacts\src\components\" }
         };
+
+        private readonly string WorkingDirectory;
+        private readonly List<string> Files;
 
         private readonly Dictionary<string, string> placeToSplit = new Dictionary<string, string>
         {
@@ -26,50 +26,51 @@ namespace Mutant.Deploy
             { "component", @"components\" }
         };
 
-        public Artifact(string WorkingDirectory, string FileName)
+        public Artifact(string WorkingDirectory, List<string> Files)
         {
             this.WorkingDirectory = WorkingDirectory;
-            this.FileName = Sanitize(FileName);
+            this.Files = Sanitize(Files);
         }
 
-        private string Sanitize(string StringToSanitize)
+        private List<string> Sanitize(List<string> FilesToSanitize)
         {
-            string SanitizedString = StringToSanitize;
-            SanitizedString = SanitizedString.Replace('/', '\\');
-            if (!SanitizedString.StartsWith(@"\\") || !SanitizedString.StartsWith(@"\"))
+            List<string> SanitizedFiles = new List<string>();
+            foreach (string File in FilesToSanitize)
             {
-                SanitizedString = String.Concat(@"\", SanitizedString);
+                string SanitizedFile = File;
+                SanitizedFile = SanitizedFile.Replace('/', '\\');
+                if (!SanitizedFile.StartsWith(@"\\") || !SanitizedFile.StartsWith(@"\"))
+                {
+                    SanitizedFile = String.Concat(@"\", SanitizedFile);
+                }
+                SanitizedFiles.Add(SanitizedFile);
             }
-            return SanitizedString;
+            
+            return SanitizedFiles;
         }
 
         public void Move()
         {
-            string fullPath = WorkingDirectory + FileName;
-            fullPath = fullPath.Replace('/', '\\');
-            SplitString path = Spliter.Split(fullPath, ".");
-
-            if (directoryByFileType.ContainsKey(path.Right))
+            foreach (string File in Files)
             {
+                string fullPath = WorkingDirectory + File;
+                SplitString path = Spliter.Split(fullPath, ".");
+
                 string splitLocation = placeToSplit[path.Right];
 
                 SplitString copyPath = Spliter.Split(fullPath, splitLocation);
 
                 string targetDirectoryForFile = WorkingDirectory +
-                    directoryByFileType[path.Right] + copyPath.Right;
+                    TARGET_DIRECTORIES_BY_EXTENSION[path.Right] + copyPath.Right;
 
                 string metaFileSource = fullPath + "-meta.xml";
                 string metaFileName = copyPath.Right + "-meta.xml";
                 string targetDirectoryForMetaFile = WorkingDirectory +
-                    directoryByFileType[path.Right] + metaFileName;
+                    TARGET_DIRECTORIES_BY_EXTENSION[path.Right] + metaFileName;
 
                 Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                File.Copy(fullPath, targetDirectoryForFile);
-                File.Copy(metaFileSource, targetDirectoryForMetaFile);
-            }
-            else
-            {
-                Console.WriteLine("File not added for deployment: " + FileName);
+                System.IO.File.Copy(fullPath, targetDirectoryForFile);
+                System.IO.File.Copy(metaFileSource, targetDirectoryForMetaFile);
             }
         }
     }

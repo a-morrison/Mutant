@@ -77,12 +77,24 @@ namespace Mutant.Deploy.Factory.Artificers
 
         protected void ProcessResults(Collection<PSObject> Results, string WorkingDirectory)
         {
+            List<string> Files = new List<string>();
             foreach (PSObject Result in Results)
             {
-                Artifact ProposedArtifact = new Artifact(WorkingDirectory, Result.ToString());
-                ProposedArtifact.Move();
+                string fullPath = WorkingDirectory + Result.ToString();
+                fullPath = fullPath.Replace('/', '\\');
+                SplitString path = Spliter.Split(fullPath, ".");
+                if (Artifact.TARGET_DIRECTORIES_BY_EXTENSION.ContainsKey(path.Right))
+                {
+                    Files.Add(Result.ToString());
+                }
+                else
+                {
+                    Console.WriteLine("File not added for deployment: " + Result.ToString());
+                }
             }
 
+            Artifact ProposedArtifact = new Artifact(WorkingDirectory, Files);
+            ProposedArtifact.Move();
             CopyPackageXML(WorkingDirectory);
         }
 
