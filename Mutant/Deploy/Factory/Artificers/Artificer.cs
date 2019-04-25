@@ -25,12 +25,6 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
             }
         }
-
-        private struct SplitString
-        {
-            public string Left;
-            public string Right;
-        }
         
         protected Artificer(Boolean DisableSetup)
         {
@@ -109,13 +103,13 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
                 string fullPath = WorkingDirectory + SanitizedResult;
                 fullPath = fullPath.Replace('/', '\\');
-                SplitString path = Split(fullPath, ".");
+                SplitString path = Spliter.Split(fullPath, ".");
 
                 if (directoryByFileType.ContainsKey(path.Right))
                 {
                     string splitLocation = placeToSplit[path.Right];
 
-                    SplitString copyPath = Split(fullPath, splitLocation);
+                    SplitString copyPath = Spliter.Split(fullPath, splitLocation);
 
                     string targetDirectoryForFile = WorkingDirectory + 
                         directoryByFileType[path.Right] + copyPath.Right;
@@ -137,15 +131,6 @@ namespace Mutant.Deploy.Factory.Artificers
             string SourcePackage = WorkingDirectory + @"\src\package.xml";
             string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
             File.Copy(SourcePackage, TargetPackage);
-        }
-
-        private SplitString Split(string StringToSplit, string SplitLocation)
-        {
-            SplitString split = new SplitString();
-            string[] splited = StringToSplit.Split(new string[] { SplitLocation }, StringSplitOptions.None);
-            split.Left = String.Join(".", splited.Take(splited.Length - 1));
-            split.Right = splited.Last();
-            return split;
         }
 
         private string FindBaseCommit(string Commit)
