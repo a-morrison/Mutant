@@ -7,7 +7,7 @@ namespace Mutant.Deploy
 {
     public class Artifact
     {
-        public static readonly Dictionary<string, string> TARGET_DIRECTORIES_BY_EXTENSION = new Dictionary<string, string>
+        public static readonly IReadOnlyDictionary<string, string> TARGET_DIRECTORIES_BY_EXTENSION = new Dictionary<string, string>
         {
             { "cls", @"\deploy\artifacts\src\classes\" },
             { "trigger", @"\deploy\artifacts\src\triggers\" },
