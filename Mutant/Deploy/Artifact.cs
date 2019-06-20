@@ -7,7 +7,7 @@ namespace Mutant.Deploy
 {
     public class Artifact
     {
-        public static readonly Dictionary<string, string> TARGET_DIRECTORIES_BY_EXTENSION = new Dictionary<string, string>
+        public static readonly IReadOnlyDictionary<string, string> TARGET_DIRECTORIES_BY_EXTENSION = new Dictionary<string, string>
         {
             { "cls", @"\deploy\artifacts\src\classes\" },
             { "trigger", @"\deploy\artifacts\src\triggers\" },
@@ -49,7 +49,7 @@ namespace Mutant.Deploy
             return SanitizedFiles;
         }
 
-        public void Move()
+        public void Display()
         {
             foreach (string File in Files)
             {
@@ -57,7 +57,6 @@ namespace Mutant.Deploy
                 SplitString path = Spliter.Split(fullPath, ".");
 
                 string splitLocation = placeToSplit[path.Right];
-
                 SplitString copyPath = Spliter.Split(fullPath, splitLocation);
 
                 string targetDirectoryForFile = WorkingDirectory +
@@ -69,8 +68,16 @@ namespace Mutant.Deploy
                     TARGET_DIRECTORIES_BY_EXTENSION[path.Right] + metaFileName;
 
                 Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                System.IO.File.Copy(fullPath, targetDirectoryForFile);
-                System.IO.File.Copy(metaFileSource, targetDirectoryForMetaFile);
+                try
+                {
+                    System.IO.File.Copy(fullPath, targetDirectoryForFile);
+                    System.IO.File.Copy(metaFileSource, targetDirectoryForMetaFile);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Console.WriteLine("Possible destructive change detected!");
+                    Console.WriteLine(ex.FileName + " not added to artifact.");
+                }
             }
         }
     }

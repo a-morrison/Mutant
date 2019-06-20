@@ -6,7 +6,7 @@ namespace Mutant.Deploy.Factory.Artificers
     {
         public override string Target => "comprehensiveDeploment";
 
-        public ComprehensiveArtificer() : base(true)
+        public ComprehensiveArtificer() : base(false)
         {
         }
 
