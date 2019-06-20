@@ -68,8 +68,16 @@ namespace Mutant.Deploy
                     TARGET_DIRECTORIES_BY_EXTENSION[path.Right] + metaFileName;
 
                 Console.WriteLine("Adding " + copyPath.Right + " to deployment");
-                System.IO.File.Copy(fullPath, targetDirectoryForFile);
-                System.IO.File.Copy(metaFileSource, targetDirectoryForMetaFile);
+                try
+                {
+                    System.IO.File.Copy(fullPath, targetDirectoryForFile);
+                    System.IO.File.Copy(metaFileSource, targetDirectoryForMetaFile);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    Console.WriteLine("Possible destructive change detected!");
+                    Console.WriteLine(ex.FileName + " not added to artifact.");
+                }
             }
         }
     }
