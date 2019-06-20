@@ -31,6 +31,11 @@ namespace Mutant.Deploy.Engine
 
                 ant.Start();
                 ant.WaitForExit();
+
+                if (ant.ExitCode == 1)
+                {
+                    throw new Exception("Deployment failed! See logs for details.");
+                }
             }
         }
 
