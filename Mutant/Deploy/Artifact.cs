@@ -16,7 +16,7 @@ namespace Mutant.Deploy
         };
 
         private readonly string WorkingDirectory;
-        private readonly List<string> Files;
+        private readonly Dictionary<string, string> FileToChangeType;
 
         private readonly Dictionary<string, string> placeToSplit = new Dictionary<string, string>
         {
@@ -26,16 +26,16 @@ namespace Mutant.Deploy
             { "component", @"components\" }
         };
 
-        public Artifact(string WorkingDirectory, List<string> Files)
+        public Artifact(string WorkingDirectory, Dictionary<string, string> Files)
         {
             this.WorkingDirectory = WorkingDirectory;
-            this.Files = Sanitize(Files);
+            this.FileToChangeType = Sanitize(Files);
         }
 
-        private List<string> Sanitize(List<string> FilesToSanitize)
+        private Dictionary<string, string> Sanitize(Dictionary<string, string> FilesToSanitize)
         {
-            List<string> SanitizedFiles = new List<string>();
-            foreach (string File in FilesToSanitize)
+            Dictionary<string, string> SanitizedFiles = new Dictionary<string, string>();
+            foreach (string File in FilesToSanitize.Keys)
             {
                 string SanitizedFile = File;
                 SanitizedFile = SanitizedFile.Replace('/', '\\');
@@ -43,7 +43,7 @@ namespace Mutant.Deploy
                 {
                     SanitizedFile = String.Concat(@"\", SanitizedFile);
                 }
-                SanitizedFiles.Add(SanitizedFile);
+                SanitizedFiles.Add(SanitizedFile, FilesToSanitize[File]);
             }
             
             return SanitizedFiles;
@@ -51,7 +51,7 @@ namespace Mutant.Deploy
 
         public void Display()
         {
-            foreach (string File in Files)
+            foreach (string File in FileToChangeType.Keys)
             {
                 string fullPath = WorkingDirectory + File;
                 SplitString path = Spliter.Split(fullPath, ".");
