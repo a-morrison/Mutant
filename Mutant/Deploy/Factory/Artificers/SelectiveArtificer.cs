@@ -26,7 +26,7 @@ namespace Mutant.Deploy.Factory.Artificers
                     Difference = "HEAD " + BaseCommit;
                 }
 
-                string Command = String.Format("git diff {0} --name-only", Difference);
+                string Command = String.Format("git diff-tree --no-commit-id --name-status -r {0}", Difference);
                 Collection<PSObject> results = Shell.RunCommand(Creds.WorkingDirectory, Command);
 
                 ProcessResults(results, Creds.WorkingDirectory);
