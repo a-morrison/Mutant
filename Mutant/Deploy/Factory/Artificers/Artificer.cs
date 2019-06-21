@@ -77,15 +77,17 @@ namespace Mutant.Deploy.Factory.Artificers
 
         protected void ProcessResults(Collection<PSObject> Results, string WorkingDirectory)
         {
-            List<string> Files = new List<string>();
+            Dictionary<string, string> FileToType = new Dictionary<string, string>();
             foreach (PSObject Result in Results)
             {
-                string fullPath = WorkingDirectory + Result.ToString();
+                string type = Result.ToString().Substring(0, 1);
+                string resultWithoutType = Result.ToString().Remove(0).Trim();
+                string fullPath = WorkingDirectory + resultWithoutType;
                 fullPath = fullPath.Replace('/', '\\');
                 SplitString path = Spliter.Split(fullPath, ".");
                 if (Artifact.TARGET_DIRECTORIES_BY_EXTENSION.ContainsKey(path.Right))
                 {
-                    Files.Add(Result.ToString());
+                    FileToType.Add(resultWithoutType, type);
                 }
                 else
                 {
@@ -93,7 +95,7 @@ namespace Mutant.Deploy.Factory.Artificers
                 }
             }
 
-            Artifact ProposedArtifact = new Artifact(WorkingDirectory, Files);
+            Artifact ProposedArtifact = new Artifact(WorkingDirectory, FileToType);
             ProposedArtifact.Display();
         }
 
