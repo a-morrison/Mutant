@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Mutant.Core.Util;
+using System.Xml.Linq;
 
 namespace Mutant.Deploy
 {
@@ -51,6 +52,7 @@ namespace Mutant.Deploy
 
         public void Display()
         {
+            Dictionary<string, List<string>> DestructiveChanges = new Dictionary<string, List<string>>();
             foreach (string File in FileToChangeType.Keys)
             {
                 string fullPath = WorkingDirectory + File;
@@ -67,6 +69,17 @@ namespace Mutant.Deploy
                 string targetDirectoryForMetaFile = WorkingDirectory +
                     TARGET_DIRECTORIES_BY_EXTENSION[path.Right] + metaFileName;
 
+                string changeType = FileToChangeType[File];
+                if (changeType.Equals("D"))
+                {
+                    SplitString extensionSplit = Spliter.Split(File, ".");
+                    if (!DestructiveChanges.ContainsKey(extensionSplit.Right))
+                    {
+                        DestructiveChanges.Add(extensionSplit.Right, new List<string>());
+                    }
+                    DestructiveChanges[extensionSplit.Right].Add(File);
+                }
+
                 Console.WriteLine("Adding " + copyPath.Right + " to deployment");
                 try
                 {
@@ -79,15 +92,60 @@ namespace Mutant.Deploy
                     Console.WriteLine(ex.FileName + " not added to artifact.");
                 }
             }
-
-            CopyPackageXML(this.WorkingDirectory);
+            if (DestructiveChanges.Count != 0)
+            {
+                CreateDestructiveChangesXML(DestructiveChanges);
+            }
+            CopyPackageXML();
         }
 
-        private void CopyPackageXML(string WorkingDirectory)
+        private void CopyPackageXML()
         {
-            string SourcePackage = WorkingDirectory + @"\src\package.xml";
-            string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
+            string SourcePackage = this.WorkingDirectory + @"\src\package.xml";
+            string TargetPackage = this.WorkingDirectory + @"\deploy\artifacts\src\package.xml";
             File.Copy(SourcePackage, TargetPackage);
+        }
+
+        private void CreateDestructiveChangesXML(Dictionary<string, List<string>> ExtensionToFiles)
+        {
+            var ns = XNamespace.Get("http://soap.sforce.com/2006/04/metadata");
+            XDocument ChangesXML = new XDocument(new XDeclaration("1.0", "utf-8", null));
+            var root = new XElement(ns + "Package");
+            foreach (string Extension in ExtensionToFiles.Keys)
+            {
+                var type = new XElement("type");
+                string ExtensionName = GetExtensionName(Extension);
+                List<string> Files = ExtensionToFiles[Extension];
+                foreach (string File in Files)
+                {
+                    var member = new XElement("members", File);
+                    type.Add(member);
+                }
+                var typeName = new XElement("name", ExtensionName);
+                type.Add(typeName);
+                root.Add(type);
+            }
+            ChangesXML.Add(root);
+
+            string TargetDirectory = this.WorkingDirectory + @"\deploy\artifacts\src\destructiveChangesPost.xml";
+            ChangesXML.Save(TargetDirectory);
+        }
+
+        private string GetExtensionName(string Extension)
+        {
+            switch (Extension)
+            {
+                case "cls":
+                    return "ApexClass";
+                case "trigger":
+                    return "ApexTrigger";
+                case "page":
+                    return "ApexPage";
+                case "component":
+                    return "ApexComponent";
+                default:
+                    return Extension;
+            }
         }
     }
 }
