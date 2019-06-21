@@ -81,7 +81,7 @@ namespace Mutant.Deploy.Factory.Artificers
             foreach (PSObject Result in Results)
             {
                 string type = Result.ToString().Substring(0, 1);
-                string resultWithoutType = Result.ToString().Remove(0).Trim();
+                string resultWithoutType = Result.ToString().Remove(0, 1).Trim();
                 string fullPath = WorkingDirectory + resultWithoutType;
                 fullPath = fullPath.Replace('/', '\\');
                 SplitString path = Spliter.Split(fullPath, ".");
