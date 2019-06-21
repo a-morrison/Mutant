@@ -79,6 +79,15 @@ namespace Mutant.Deploy
                     Console.WriteLine(ex.FileName + " not added to artifact.");
                 }
             }
+
+            CopyPackageXML(this.WorkingDirectory);
+        }
+
+        private void CopyPackageXML(string WorkingDirectory)
+        {
+            string SourcePackage = WorkingDirectory + @"\src\package.xml";
+            string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
+            File.Copy(SourcePackage, TargetPackage);
         }
     }
 }

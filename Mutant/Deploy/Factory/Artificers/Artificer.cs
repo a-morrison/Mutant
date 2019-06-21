@@ -95,14 +95,6 @@ namespace Mutant.Deploy.Factory.Artificers
 
             Artifact ProposedArtifact = new Artifact(WorkingDirectory, Files);
             ProposedArtifact.Display();
-            CopyPackageXML(WorkingDirectory);
-        }
-
-        private void CopyPackageXML(string WorkingDirectory)
-        {
-            string SourcePackage = WorkingDirectory + @"\src\package.xml";
-            string TargetPackage = WorkingDirectory + @"\deploy\artifacts\src\package.xml";
-            File.Copy(SourcePackage, TargetPackage);
         }
 
         private string FindBaseCommit(string Commit)
