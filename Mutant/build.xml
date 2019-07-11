@@ -73,6 +73,7 @@
         <include name="**/pages/**"/>
         <include name="**/components/**"/>
         <include name="package.xml"/>
+        <include name="destructiveChangesPost.xml"/>
       </fileset>
     </zip>
     <echo message="*************Deploying ${sf.zipFile} *******************************************"/>

@@ -72,12 +72,12 @@ namespace Mutant.Deploy
                 string changeType = FileToChangeType[File];
                 if (changeType.Equals("D"))
                 {
-                    SplitString extensionSplit = Spliter.Split(File, ".");
+                    SplitString extensionSplit = Spliter.Split(copyPath.Right, ".");
                     if (!DestructiveChanges.ContainsKey(extensionSplit.Right))
                     {
                         DestructiveChanges.Add(extensionSplit.Right, new List<string>());
                     }
-                    DestructiveChanges[extensionSplit.Right].Add(File);
+                    DestructiveChanges[extensionSplit.Right].Add(extensionSplit.Left);
                 }
 
                 Console.WriteLine("Adding " + copyPath.Right + " to deployment");
