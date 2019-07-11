@@ -34,7 +34,7 @@ namespace Mutant.Deploy.Engine
 
                 if (ant.ExitCode == 1)
                 {
-                    throw new Exception("Deployment failed! See logs for details.");
+                    throw new EngineException("Deployment failed! See logs for details.");
                 }
             }
         }
