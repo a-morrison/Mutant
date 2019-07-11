@@ -113,7 +113,7 @@ namespace Mutant.Deploy
             var root = new XElement(ns + "Package");
             foreach (string Extension in ExtensionToFiles.Keys)
             {
-                var type = new XElement("type");
+                var type = new XElement("types");
                 string ExtensionName = GetExtensionName(Extension);
                 List<string> Files = ExtensionToFiles[Extension];
                 foreach (string File in Files)
